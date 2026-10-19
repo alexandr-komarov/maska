@@ -1,0 +1,2568 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<!-- Браузер не даёт странице ходить в сеть: ни запросов, ни отправки форм, ни загрузки чужих скриптов, стилей и картинок -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Маска: обезличивание документов в браузере</title>
+<meta name="description" content="Убирает ФИО, телефоны, ИНН, счета и адреса из текста, docx и xlsx перед отправкой в нейросеть и возвращает их в ответ. Всё считается в браузере, файл никуда не уходит.">
+<link rel="canonical" href="https://alexandrkomarov.com/tools/maska/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alexandrkomarov.com/tools/maska/">
+<meta property="og:site_name" content="alexandrkomarov.com">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Маска: обезличивание документов в браузере">
+<meta property="og:description" content="Убирает ФИО, телефоны, ИНН, счета и адреса из текста, docx и xlsx перед отправкой в нейросеть и возвращает их в ответ. Файл никуда не уходит.">
+<meta property="og:image" content="https://alexandrkomarov.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Александр Комаров, ИИ-тренер и консультант по внедрению ИИ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://alexandrkomarov.com/og.png">
+<meta name="twitter:title" content="Маска: обезличивание документов в браузере">
+<meta name="twitter:description" content="Убирает ФИО, телефоны, ИНН, счета и адреса из текста, docx и xlsx перед отправкой в нейросеть и возвращает их в ответ. Файл никуда не уходит.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://alexandrkomarov.com/tools/maska/#webpage",
+      "url": "https://alexandrkomarov.com/tools/maska/",
+      "name": "Маска: обезличивание документов в браузере",
+      "description": "Убирает ФИО, телефоны, ИНН, счета и адреса из текста, docx и xlsx перед отправкой в нейросеть и возвращает их в ответ. Всё считается в браузере, файл никуда не уходит.",
+      "inLanguage": "ru-RU",
+      "isPartOf": {
+        "@id": "https://alexandrkomarov.com/#website"
+      },
+      "author": {
+        "@id": "https://alexandrkomarov.com/#person"
+      },
+      "datePublished": "2026-09-23",
+      "dateModified": "2026-09-24",
+      "breadcrumb": {
+        "@id": "https://alexandrkomarov.com/tools/maska/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://alexandrkomarov.com/tools/maska/#app"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://alexandrkomarov.com/tools/maska/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Александр Комаров",
+          "item": "https://alexandrkomarov.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Инструменты",
+          "item": "https://alexandrkomarov.com/tools/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Маска"
+        }
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://alexandrkomarov.com/tools/maska/#app",
+      "name": "Маска",
+      "url": "https://alexandrkomarov.com/tools/maska/",
+      "description": "Обезличивает текст, docx, xlsx и csv перед отправкой в нейросеть: заменяет ФИО, телефоны, ИНН, счета и адреса метками и возвращает данные в ответ модели. Работает в браузере, файл не уходит на сервер.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Любая, работает в браузере",
+      "inLanguage": "ru-RU",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "author": {
+        "@id": "https://alexandrkomarov.com/#person"
+      },
+      "publisher": {
+        "@id": "https://alexandrkomarov.com/#person"
+      }
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#ffffff;--card:#ffffff;--ink:#141414;--muted:#6b6b70;--line:#d9d9d9;--chip:#f2f2f2;--acc:#229ed9;--acc-t:#146e9a;--warn:#c2453c;--ok:#2F6B3A;
+--sans:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;--d:"Sofia Sans Extra Condensed","Arial Narrow",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans)}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:20px;padding-block:20px 60px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
+h1{margin:6px 0 0;flex-basis:100%;font:700 56px/.9 var(--d);text-transform:uppercase;letter-spacing:-.01em}
+.eb{font:500 13px var(--sans);color:var(--muted)}
+.sub{color:var(--muted);margin:0}
+.steps{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 -20px 18px;padding:10px 20px;list-style:none;background:var(--bg);border-bottom:1px solid var(--line)}
+.steps button{width:100%;text-align:left;border:1px solid var(--line);background:var(--chip);font:500 14px var(--sans);padding:8px 12px;display:flex;gap:8px;align-items:center}
+.steps button b{font:700 14px var(--mono);color:var(--acc-t)}
+.steps button:not(:disabled):hover{border-color:var(--ink);background:var(--card)}
+.steps button.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.steps button.on b{color:var(--acc)}
+.steps button::after{content:"↑";margin-left:auto;opacity:0;font-weight:700}
+.steps button.done:not(.on)::after{content:"✓";opacity:.7;color:var(--ok)}
+.steps button:not(:disabled):not(.on):hover::after{content:"перейти";opacity:.6;font-size:12px;color:var(--ink)}
+[id^=s-]{scroll-margin-top:76px}
+.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 4px var(--acc)}100%{box-shadow:0 0 0 4px transparent}}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+button,.btn{font:600 14px var(--sans);border:1px solid var(--ink);background:var(--card);color:var(--ink);padding:8px 14px;cursor:pointer;text-decoration:none;display:inline-block}
+button.primary{background:var(--acc);border-color:var(--acc);color:var(--ink)}
+button:disabled{opacity:.4;cursor:default}
+input[type=text]{font:14px var(--sans);padding:8px 10px;border:1px solid var(--line);background:var(--card);min-width:260px;flex:1}
+textarea{width:100%;font:14px/1.5 var(--mono);border:1px solid var(--line);background:var(--card);padding:12px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--card);border:1px solid var(--line);min-width:0}
+.panel h2{margin:0;padding:10px 14px;font:700 24px/1 var(--d);text-transform:uppercase;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;align-items:center}
+.doc{padding:14px;white-space:pre-wrap;word-wrap:break-word;font:14px/1.65 var(--mono);max-height:62vh;overflow:auto}
+mark{padding:0 2px;border-radius:2px;color:inherit}
+.tag{font-weight:700;padding:0 3px;border-radius:2px}
+.PERSON{background:#F3C9BF}.PHONE{background:#CFE0F3}.EMAIL{background:#D6ECD2}.INN,.OGRN,.BIK,.KPP{background:#EADCF3}
+.SNILS,.PASSPORT,.DOB{background:#F6E3A8}.ACCOUNT,.CARD{background:#E4E0D2}.ADDRESS{background:#D3EEEC}.ORG{background:#F2D6E6}.AMOUNT{background:#E9E6C3}.TERM{background:#FFD8A8}.ID,.DATE{background:#DCE3C8}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.legend span{font:600 13px var(--sans);padding:3px 8px}
+.check{margin:14px 0;padding:12px 14px;border-left:4px solid var(--ok);background:var(--chip)}
+.check.warn{border-color:var(--warn)}
+.check b{display:block;margin-bottom:4px}
+.check ul{margin:6px 0 0;padding-left:20px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--chip);vertical-align:top}
+th{font:600 13px var(--sans);color:var(--muted)}
+td code{font:13px var(--mono)}
+.scroll{overflow-x:auto}
+section{margin-top:26px}
+section>h3{font:700 32px/1 var(--d);text-transform:uppercase;margin:0 0 8px}
+.note{color:var(--muted);font-size:13px}
+.drop{border:2px dashed var(--line);padding:10px 14px;color:var(--muted)}
+footer{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer a{color:inherit}
+.drop.over{border-color:var(--acc);color:var(--acc-t)}
+.safe{border:1px solid var(--line);border-left:4px solid var(--ok);background:var(--chip);padding:10px 14px 0;margin-bottom:16px}
+.safe.warn{border-left-color:var(--warn)}
+.safe .bar>b{font:700 22px/1 var(--d);text-transform:uppercase}
+.safe .check{margin:0 0 10px;background:var(--card)}
+mark.unknown{background:transparent;outline:2px solid var(--warn)}
+.NAME,.NUM,.AT{background:var(--card);outline:2px dashed var(--warn);outline-offset:-2px}
+mark[data-open]{cursor:pointer}
+.review .rv{margin:0 0 14px;padding:12px 14px;border:1px solid var(--line)}
+.review .rv>b{display:block;margin-bottom:6px}
+.review .rv-row{display:flex;gap:10px;align-items:baseline;padding:4px 0;border-top:1px solid var(--chip)}
+.review .rv-row>span:first-child{font:600 13px var(--sans);padding:2px 8px;white-space:nowrap}
+.review .dzs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px;max-height:40vh;overflow:auto}
+.dz{font:500 14px var(--sans);padding:5px 10px;display:inline-flex;gap:8px;align-items:baseline;border:2px dashed var(--warn)}
+.dz i{font-style:normal;color:var(--muted);font-size:12px}
+.dz u{text-decoration:none;color:var(--acc-t);font-size:12px;font-weight:600}
+.dz:hover{background:var(--chip)}
+.dz.off{border:1px solid var(--line)}
+#selBar[hidden]{display:none}
+#selBar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:6;margin:0;padding:8px;background:var(--ink)}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><div class="eb">Прототип · всё считается в этом браузере, в сеть ничего не уходит</div><h1>Маска</h1></div>
+  <p class="sub">Убрать персональные данные до отправки в ИИ и вернуть их в ответ</p>
+</header>
+
+<ol class="steps" id="steps">
+  <li><button data-go="s-doc" class="on"><b>1</b>Документ</button></li>
+  <li><button data-go="s-check" disabled><b>2</b>Маска и проверка</button></li>
+  <li><button data-go="s-after" data-spy="s-vault" disabled><b>3</b>Текст с метками → в ИИ</button></li>
+  <li><button data-go="s-answer" disabled><b>4</b>Ответ ИИ → подстановка</button></li>
+</ol>
+
+<div class="safe warn" id="s-safe">
+  <div class="bar"><b>Сейф</b><span id="safeInfo"></span></div>
+  <div class="bar">
+    <label class="btn">Открыть сейф<input type="file" id="safeFile" accept=".json,application/json" hidden></label>
+    <input type="text" id="safeName" placeholder="Название сейфа: клиент или дело">
+    <button id="safeSave">Сохранить сейф</button>
+    <button id="safeNew">Начать новый сейф</button>
+  </div>
+  <div class="check" id="safeMsg" hidden></div>
+  <div class="check warn" id="safeAsk" hidden><b id="safeAskText"></b><div class="bar" style="margin:8px 0 0"><button class="primary" id="safeYes">Заменить</button><button id="safeNo">Оставить текущий</button></div></div>
+</div>
+<div class="bar" id="s-doc">
+  <button id="sample">Пример: договор и акт</button>
+  <label class="btn">Загрузить файл<input type="file" id="file" accept=".docx,.xlsx,.csv,.txt,.md,.doc,.xls" hidden></label>
+  <span class="drop" id="drop">или перетащите сюда docx, xlsx, csv, md, txt или файл сейфа</span>
+  <span class="note" id="fileinfo"></span>
+</div>
+<textarea id="src" rows="9" placeholder="Вставьте текст документа…"></textarea>
+<div class="note" style="margin-top:10px"><label for="terms"><b>Что ещё спрятать.</b> Впишите названия фирм, проектов и объектов, которые остались в тексте, через запятую. Названия без ООО, АО или ИП Маска сама не находит. Слова хранятся в сейфе и ищутся во всех следующих документах.</label></div>
+<div class="bar" style="margin-top:4px">
+  <input type="text" id="terms" placeholder="Например: Казэнерго, АСПЕКТ, проект Север-2">
+  <label class="opt" title="Цены и суммы в рублях, евро и долларах заменяются метками, сумма прописью тоже. В тексте включено, для таблиц с расчётами снимите галочку."><input type="checkbox" id="sums" checked> прятать суммы</label>
+  <button class="primary" id="run">Замаскировать</button>
+</div>
+<div class="check" id="s-sample" hidden><b id="sampleTitle"></b><span id="sampleText"></span><div class="bar" style="margin:8px 0 0"><button id="sampleDoc">1. Договор</button><button id="sampleAkt">2. Акт к нему</button></div></div>
+
+<div id="out" hidden>
+  <div class="legend" id="s-check"></div>
+  <div class="grid">
+    <div class="panel"><h2>До <span class="note" id="cntBefore"></span></h2><div class="doc" id="before"></div></div>
+    <div class="panel" id="s-after"><h2>После — это уходит в ИИ <button id="copy">Копировать</button></h2><div class="doc" id="after"></div></div>
+  </div>
+  <section class="review" id="s-review">
+    <h3>Окно проверки</h3>
+    <p class="note">Маска показывает, что спрятала уверенно и в чём сомневается. Сомнительное она прячет тоже. Если слово или число прятать не нужно, щёлкните по нему, и метка снимется во всём документе. Если что-то осталось на виду, выделите это мышью в панели «До».</p>
+    <div id="review"></div>
+    <div class="check warn" id="gate"><b id="gateTitle"></b><span id="gateText"></span><div class="bar" style="margin:8px 0 0"><button class="primary" id="okReview">Я всё просмотрел, открыть сохранение</button></div></div>
+    <div class="bar" id="selBar" hidden><button class="primary" id="addSel"></button></div>
+  </section>
+  <div class="check" id="check"></div>
+
+  <section id="s-vault">
+    <h3>Метки документа</h3>
+    <p class="note">Все метки клиента хранит сейф. Он остаётся у вас, в сеть не уходит. Без сейфа метки обратно не превратить в данные.</p>
+    <div class="scroll"><table><thead><tr><th>Метка</th><th>Что это</th><th>Исходное значение</th><th>Встречается как</th></tr></thead><tbody id="vault"></tbody></table></div>
+    <div class="check warn" id="safeRemind" hidden></div>
+    <div class="check warn" id="retWarn" hidden></div>
+    <div class="bar" style="margin-top:10px"><button class="primary" id="dlFile" hidden disabled>Скачать файл в исходном формате</button><button id="dlMasked">Скачать текст с метками</button><button id="dlVault">Сохранить сейф</button><span class="note" id="retInfo"></span></div>
+  </section>
+</div>
+
+  <section id="s-answer">
+    <h3>Ответ ИИ → обратная подстановка</h3>
+    <div class="bar"><button id="copyPrompt">Скопировать просьбу для нейросети</button><span class="note" id="promptInfo">Просьба объясняет нейросети, что значат метки, и просит их не менять. Вставьте её в чат вместе с обезличенным файлом и допишите свою задачу.</span></div>
+    <textarea id="promptBox" rows="8" readonly hidden style="margin-bottom:10px"></textarea>
+    <p class="note">Метки заменяются значениями из открытого сейфа. Метки, которых в сейфе нет, подсвечены и остаются как есть.</p>
+    <textarea id="answer" rows="7" placeholder="Вставьте сюда ответ нейросети с метками вида [ОРГ_1], [ФИО_2]"></textarea>
+    <div class="bar" style="margin-top:8px"><button class="primary" id="restore">Вернуть данные</button><button id="copyRestored" disabled>Копировать результат</button></div>
+    <div class="panel" id="restoredPanel" hidden><h2>Ответ с данными <span class="note" id="restoreInfo"></span></h2><div class="doc" id="restored"></div></div>
+  </section>
+<footer>Инструмент <a href="https://alexandrkomarov.com/">Александра Комарова</a>, ИИ-тренера. Ещё: <a href="/tools/md/">конвертер документов в Markdown</a>.</footer>
+</div>
+
+<script>
+const LABEL={PERSON:'ФИО',PHONE:'Телефон',EMAIL:'Почта',INN:'ИНН',KPP:'КПП',OGRN:'ОГРН',BIK:'БИК',SNILS:'СНИЛС',PASSPORT:'Паспорт',DOB:'Дата рождения',ACCOUNT:'Счёт',CARD:'Карта',ADDRESS:'Адрес',ORG:'Организация',TERM:'Своё слово',ID:'Номер документа',NICK:'Ник',DATE:'Дата',AMOUNT:'Сумма',NAME:'Слово с заглавной',NUM:'Длинное число',AT:'Со знаком @'};
+const U='А-ЯЁ', L='а-яё';
+const SURN=`[${U}][${L}]+(?:-[${U}][${L}]+)?`, NAME=`[${U}][${L}]+`, S='[ \\t\\u00A0]';
+const PATR=`[${U}][${L}]+(?:ович|евич|ич|овн|евн|ичн|иничн)(?:а|у|ем|ом|е|ой|ы|ей)?`;
+const digits=s=>s.replace(/\D/g,'');
+// контрольная сумма ИНН юрлица (10 цифр) и физлица (12 цифр)
+const innSum=(d,w)=>w.reduce((a,k,i)=>a+k*d[i],0)%11%10;
+const innOk=s=>{const d=[...digits(s)].map(Number);
+  if(d.length===10)return innSum(d,[2,4,10,3,5,9,4,6,8])===d[9];
+  if(d.length===12)return innSum(d,[7,2,4,10,3,5,9,4,6,8])===d[10]&&innSum(d,[3,7,2,4,10,3,5,9,4,6,8])===d[11];return false};
+const MON='января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря';
+const DATE1=`(?:\\d{1,2}[./]\\d{1,2}[./](?:\\d{4}|\\d{2})|«?\\d{1,2}»?\\s+(?:${MON})\\s+\\d{4})`;
+// формы собственности; банки остаются в тексте, их название не тайна
+const OFORM='ООО|ОАО|ЗАО|ПАО|НАО|АО|АНО|НКО|ТСЖ|ТСН|СНТ|ЖСК|СПК|ЧОУ|ФГУП|МУП|ГУП';
+const BANK=/банк/i;
+// ключ адреса и почты по тексту: по одним цифрам «ул. Ленина, д. 20» и «ул. Мира, д. 20» получали одну метку
+const addrKey=m=>m.toLowerCase().replace(/ё/g,'е').replace(/[\s.,]+/g,'');
+const orgKey=n=>n.replace(/[«»"]/g,'').trim().toLowerCase().replace(/ё/g,'е').replace(/\s+/g,' ');
+const DET=[
+  {t:'EMAIL',re:/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g,key:m=>m.toLowerCase()},
+  {t:'CARD',re:/\b(?:\d{4}[ -]?){3}\d{4}\b/g},
+  {t:'ACCOUNT',re:/\b\d{5}[ .]?\d{3}[ .]?\d{1}[ .]?\d{11}\b/g},
+  {t:'SNILS',re:/(?<![\d.,])\d{3}[- ]\d{3}[- ]\d{3}[ -]\d{2}(?!\d|[.,]\d)/g},
+  {t:'SNILS',re:/СНИЛС\s*:?\s*\d{11}\b/g,val:m=>digits(m)},
+  // одиннадцать цифр с подписью ОКАТО, ОКТМО, ОКПО это код, а не СНИЛС
+  {t:'SNILS',re:/(?<![\d.,]|(?:ОКАТО|ОКТМО|ОКПО|ОКОГУ|ОКФС|ОКОПФ)\s*:?\s*)[0-69]\d{10}(?!\d|[.,]\d)/g},
+  {t:'INN',re:/(?<![\d.,])\d{12}(?!\d|[.,]\d)/g},
+  {t:'PASSPORT',re:/(?:паспорт|серия)[^\d\n]{0,40}\d{2}\s?\d{2}[^\d\n]{0,12}\d{6}/gi,val:m=>m.replace(/^[^\d]+/,'')},
+  // без подписи паспорт только с разделителем или №: десять цифр подряд это ИНН или телефон
+  {t:'PASSPORT',re:/(?<![\d.,])(?:\d{2}[ \t]\d{2}|\d{4})[ \t]*(?:№|N)[ \t]*\d{6}(?!\d|[.,]\d)|(?<![\d.,])\d{2}[ \t]\d{2}[ \t]\d{6}(?!\d|[.,]\d)|(?<![\d.,])\d{4}[ \t-]\d{6}(?!\d|[.,]\d)/g},
+  {t:'PASSPORT',re:/(?<=паспорт[^\n]{0,80}выдан[аоы]?[ \t]+)[^,\n]{3,90}?(?=[ \t]+\d{1,2}\.\d{2}\.\d{4}|,|\n|$)/gi},
+  {t:'PASSPORT',re:/код\s+подр(?:азделения|\.)\s*:?\s*\d{3}-\d{3}/gi,val:m=>m.match(/\d{3}-\d{3}/)[0]},
+  {t:'INN',re:/ИНН\s*:?\s*(?:\d{12}|\d{10})\b/g,val:m=>digits(m)},
+  {t:'KPP',re:/КПП\s*:?\s*\d{9}\b/g,val:m=>digits(m)},
+  {t:'OGRN',re:/ОГРН(?:ИП)?\s*:?\s*(?:\d{15}|\d{13})\b/g,val:m=>digits(m)},
+  {t:'BIK',re:/БИК\s*:?\s*\d{9}\b/g,val:m=>digits(m)},
+  {t:'DOB',re:/(?:дата рождения|родил(?:ся|ась)|д\.\s?р\.)\s*:?\s*(?:\d{1,2}[./-]\d{1,2}[./-]\d{4}|\d{1,2}\s+(?:января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\s+\d{4})/gi,val:m=>m.match(/\d{1,2}(?:[./-]\d{1,2}[./-]|\s+[а-я]+\s+)\d{4}/i)[0]},
+  {t:'DOB',re:/\d{1,2}(?:[./-]\d{1,2}[./-]|\s+(?:января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\s+)\d{4}(?=\s*(?:года?\s+рождения|г\.\s?р\.))/gi},
+  {t:'DOB',re:/(?<!\d)(?:19|20)\d{2}\s?г\.\s?р\./g},
+  {t:'ID',re:/(?:табельн[а-яё]*\s+(?:номер|№)|таб\.\s*№|полис[а-яё]*(?:\s+ОМС)?|водительск[а-яё]*\s+удостоверени[а-яё]*|удостоверени[а-яё]*\s+№)\s*:?\s*№?\s*[\d ]{4,20}\d/gi,val:m=>m.replace(/^\D+/,'')},
+  {t:'NICK',re:/(?<![\w@.])@[A-Za-z][\w]{3,}/g,key:m=>m.toLowerCase()},
+  // внутри номера нет табуляции: две ячейки таблицы не телефон
+  {t:'PHONE',re:/(?:\+7|(?<![\d.,])8)(?:[ ()‑-]*\d){10}(?!\d)/g,key:m=>digits(m).slice(-10)},
+  {t:'PHONE',re:/\+(?!7)\d{1,3}(?:[ ()-]*\d){7,12}(?!\d)/g,key:m=>digits(m)},
+  {t:'PHONE',re:/(?:тел\.?|телефон|моб\.?|мобильный)\s*:?\s*\d{1,3}[- ]\d{2}[- ]\d{2}(?!\d)/gi,val:m=>m.replace(/^\D+/,''),key:m=>digits(m)},
+  {t:'PHONE',re:/(?<![\d.,])9\d{9}(?!\d)/g},
+  {t:'PHONE',re:/\(\d{3,5}\)[ \t]?\d{1,3}(?:[ -]?\d{2}){2}(?!\d)/g},
+  // ИНН без подписи: десять цифр с верной контрольной суммой юрлица (двенадцать цифр ловит правило выше)
+  {t:'INN',re:/(?<![\d.,\/])\d{10}(?!\d|[.,]\d)/g,skip:m=>!innOk(m)},
+  {t:'KPP',re:/ИНН\s*\/\s*КПП\s*:?\s*\d{10}\s*\/\s*\d{9}(?!\d)/g,val:m=>m.slice(-9)},
+  // дата выдачи паспорта: дата в той же строке после слова «паспорт» или «выдан»
+  {t:'DATE',re:new RegExp(`(?<=паспорт[^\\n;]{0,160}?)${DATE1}(?!\\d)`,'gi')},
+  {t:'DATE',re:new RegExp(`дата\\s+выдачи\\s*:?\\s*${DATE1}`,'gi'),val:m=>m.match(new RegExp(DATE1))[0]},
+  {t:'ORG',re:new RegExp(`(?:${OFORM}|Общество с ограниченной ответственностью|(?:Публичное |Непубличное |Закрытое |Открытое )?[Аа]кционерное общество|Автономная некоммерческая организация|Товарищество собственников (?:жилья|недвижимости))\\s*[«"][^»"\\n]{2,60}[»"]`,'g'),key:m=>orgKey(m.match(/[«"]([^»"]+)/)[1]),skip:m=>BANK.test(m)},
+  // форма в конце, как в выгрузках 1С: «Каменный Мост ООО», «СЕВЕР ТРЕЙД, ООО», «"Вектор" ООО»
+  {t:'ORG',re:new RegExp(`(?<![\\wА-яЁё«"])(?:[«"][^«»"\\n]{2,60}[»"]|[${U}A-Z][\\wА-яЁё&.'-]*(?:[ ]+[${U}A-Z0-9][\\wА-яЁё&.'-]*){0,4}),?[ ]+(?:${OFORM})(?![\\wА-яЁё])(?![ ]*[«"])`,'g'),org:'end'},
+  {t:'ADDRESS',re:new RegExp(`(?:(?:г\\.|город)\\s*[${U}][${L}-]+,?\\s*)?(?:(?:ул\\.|улица|пр-т|проспект|пер\\.|переулок|шоссе|наб\\.|бульвар|б-р)\\s*[${U}0-9][^,\\n]{1,40}|[${U}][${L}]+\\s+(?:шоссе|проспект|улица|бульвар|переулок|набережная|ул\\.|пр\\.|пр-т|пер\\.|наб\\.|б-р)),?\\s*(?:(?:д\\.|дом)\\s*|(?<=,\\s*)|(?<=[${L}]\\s))\\d+[${L}]?(?:[,\\s]*(?:корп\\.|к\\.|стр\\.)\\s*\\d+)?(?:[,\\s]*(?:кв\\.|оф\\.|офис|пом\\.|помещение)\\s*\\d+[${U}]?)?`,'g'),key:addrKey},
+  {t:'PERSON',re:/(?:^|\n)[ \t]*(?:фамилия|имя|отчество|ф\.\s?и\.\s?о\.|фио)[^:\n]{0,40}:[ \t]*[А-ЯЁ][^\n(,;]{1,60}/gi,val:m=>m.replace(/^[\s\S]*?:[ \t]*/,'').trim(),form:true},
+  {t:'PERSON',re:new RegExp(`(?<![${U}${L}])${SURN}${S}+${NAME}${S}+${PATR}(?![${L}])`,'g'),person:'full'},
+  {t:'PERSON',re:new RegExp(`(?<![${U}${L}])${SURN}${S}+[${U}]\\.${S}?[${U}]\\.`,'g'),person:'si'},
+  {t:'PERSON',re:new RegExp(`(?<![${U}${L}])[${U}]\\.${S}?[${U}]\\.${S}?${SURN}`,'g'),person:'is'},
+];
+// Имена: только в паре с фамилией или отчеством, одно слово «Вера» или «Роман» не трогаем
+const FIRST=('Александр Алексей Анатолий Андрей Антон Аркадий Арсений Артём Артем Артур Богдан Борис Вадим Валентин Валерий Василий Виктор Виталий '+
+ 'Владимир Владислав Всеволод Вячеслав Геннадий Георгий Глеб Григорий Даниил Данил Данила Денис Дмитрий Евгений Егор Захар Иван Игнат Игорь Илья Кирилл '+
+ 'Константин Лев Леонид Максим Марат Марк Матвей Михаил Никита Николай Олег Павел Пётр Петр Платон Роберт Родион Роман Ростислав Руслан Рустам Савелий Семён Семен '+
+ 'Сергей Станислав Степан Тарас Тимофей Тимур Фёдор Федор Филипп Эдуард Эльдар Юрий Ян Ярослав Саша Серёжа Сережа Дима Лёша Леша Миша Коля Паша Вова Женя Витя '+
+ 'Костя Слава Толя Гена Юра Андрюша Александра Алёна Алена Алина Алиса Алла Анастасия Ангелина Анна Антонина Арина Валентина Валерия Варвара Вера Вероника '+
+ 'Виктория Галина Дарья Диана Ева Евгения Екатерина Елена Елизавета Жанна Зинаида Зоя Инна Ирина Карина Кира Кристина Ксения Лариса Лидия Любовь Людмила '+
+ 'Маргарита Марина Мария Милана Надежда Наталья Наталия Нина Оксана Олеся Ольга Полина Раиса Регина Светлана София Софья Тамара Татьяна Ульяна Эльвира Юлия Яна '+
+ 'Маша Таня Лена Катя Оля Наташа Света Ира Люда Галя Надя Аня Юля Настя Вика Даша Лиза Ксюша').split(' ');
+const nstem=w=>{w=w.toLowerCase().replace(/ё/g,'е');for(const e of ['ой','ей','ем','ом','ью','а','я','у','ю','ы','и','е','й','ь'])if(w.length-e.length>=2&&w.endsWith(e))return w.slice(0,-e.length);return w};
+const FSTEMS=new Set([...FIRST.map(nstem),'павл','льв','петр']);
+const title=w=>w[0]+w.slice(1).toLowerCase();
+// реквизиты заглавными не имена: «ИНН» не «Инна»
+const ABBR=/^(?:ИНН|КПП|БИК|ОГРН|ОГРНИП|СНИЛС|ОКПО|НДС|ООО|ОАО|ЗАО|ПАО|АО|ИП)$/;
+const isFirst=w=>!ABBR.test(w)&&FSTEMS.has(nstem(w));
+const AMBIG=/^(роман|вера|надежда|любовь|лев|слава|марк|ян|женя|ева)$/i;
+const isPatr=w=>new RegExp(`^${PATR}$`).test(title(w));
+// Фамилия по форме: -ов/-ев/-ин/-ын и -ский/-цкий во всех падежах
+const SURN_SHAPE=/^[а-яё]{2,}(?:(?:ов|ев|ёв|ин|ын)(?:а|у|ым|ой|ом|е|ых|ыми|ы)?|(?:ск|цк)(?:ий|ого|ому|им|ом|ая|ой|ую|ие|их))$/;
+// Шире для пары с именем: -ян, -енко, -ук, -швили, -дзе, -ич
+const SURN_WIDE=/^[а-яё]{2,}(?:ян|янц|енко|ко|ук|юк|чук|швили|дзе|ич|ец|ов|ев|ёв|ин|ын|ова|ева|ина|ына|ский|цкий|ская|цкая)$/;
+// Слова с заглавной, которые похожи на фамилию или стоят рядом с именем, но это не люди
+const NOT_PERSON=/^(заказчик|исполнител|товар|сторон|договор|приложени|российск|федераци|регламент|устав|покупател|поставщик|арендатор|арендодател|генеральн|директор|общество|акционерн|банк|раздел|пункт|соглашени|работник|работодател|подрядчик|клиент|абонент|оператор|счет|счёт|документ|сотрудник|материал|итог|резюме|заявлени|приказ|телефон|город|дата|опыт|кандидат|мнение|заметк|основани|начальник|руководител|специалист|менеджер|отдел|цех|участок|проспект|улиц|москв|ростов|иваново|королёв|королев|пушкин|саров|азов|урал|сибир|тверск|московск|ленинградск|ростовск|свердловск|челябинск|здравствуйте|уважением|спасибо|прошу)/i;
+const capWord=w=>/^[А-ЯЁ][А-ЯЁа-яё]+(?:-[А-ЯЁ][А-ЯЁа-яё]+)?$/.test(w);
+function personRuns(text,hits){
+  const run=new RegExp(`[${U}][${U}${L}]+(?:-[${U}][${U}${L}]+)?(?:${S}+[${U}][${U}${L}]+(?:-[${U}][${U}${L}]+)?){0,3}`,'g');let m;
+  while((m=run.exec(text))){
+    const toks=[];const tr=/\S+/g;let t;while((t=tr.exec(m[0])))toks.push({w:t[0],s:m.index+t.index,e:m.index+t.index+t[0].length});
+    for(let i=0;i<toks.length;i++){
+      const a=toks[i].w,b=toks[i+1]&&toks[i+1].w,c=toks[i+2]&&toks[i+2].w;const ok=w=>w&&capWord(w)&&!NOT_PERSON.test(w)&&!ABBR.test(w);
+      let span=null,sur=null,nm=null;
+      if(c&&ok(a)&&ok(b)&&isPatr(c)&&!isPatr(a)&&!isPatr(b)){  // Фамилия Имя Отчество, в том числе заглавными и с редким именем
+        span=[i,i+2];sur=a;nm=b;
+      }else if(b&&isFirst(a)&&isPatr(b)){            // Имя Отчество [Фамилия]
+        span=[i,i+1];nm=a;if(ok(c)&&!isFirst(c)&&!isPatr(c)){span=[i,i+2];sur=c}
+        if(i>0&&ok(toks[i-1].w)&&!isFirst(toks[i-1].w)){span=[i-1,span[1]];sur=sur||toks[i-1].w}
+      }else if(b&&isFirst(b)&&ok(a)&&!isFirst(a)&&!isPatr(a)){  // Фамилия Имя [Отчество]
+        span=[i,c&&isPatr(c)?i+2:i+1];sur=a;nm=b;
+      }else if(b&&isFirst(a)&&ok(b)&&!isFirst(b)&&!isPatr(b)&&!(AMBIG.test(a)&&/(ого|его)$/i.test(b))){  // Имя Фамилия
+        span=[i,i+1];sur=b;nm=a;
+      }else if(b&&ok(a)&&ok(b)&&SURN_WIDE.test(a.toLowerCase())&&!isPatr(b)&&!SURN_WIDE.test(b.toLowerCase())){  // Фамилия Имя, имя не из словаря
+        span=[i,i+1];sur=a;nm=b;
+      }
+      if(!span)continue;
+      const s=toks[span[0]].s,e=toks[span[1]].e,value=text.slice(s,e);
+      const key=sur?stem(title(sur))+'|'+nm[0].toUpperCase():'np|'+nstem(nm)+'|'+nstem(b);
+      hits.push({t:'PERSON',s,e,value,key,st:sur?stem(title(sur)):null,full:span[1]-span[0]===2,run:true});
+      i=span[1];
+    }
+  }
+  // Фамилия одна, не в начале предложения: «Заметки Гусева», «звонить Лапиной»
+  const lone=new RegExp(`(?<=[${U}${L},:)]${S}+|\\(\\s?)[${U}][${L}]{2,}(?![${L}\\-])`,'g');
+  while((m=lone.exec(text))){const w=m[0];
+    if(/(?:ск|цк)[а-яё]+$/i.test(w)&&new RegExp(`^${S}+[${L}]`).test(text.slice(m.index+w.length)))continue;
+    const q=text.slice(0,m.index);if((q.match(/«/g)||[]).length>(q.match(/»/g)||[]).length)continue;
+    if(!NOT_PERSON.test(w)&&SURN_SHAPE.test(w.toLowerCase()))
+    hits.push({t:'PERSON',s:m.index,e:m.index+w.length,value:w,key:stem(w)+'|?',st:stem(w),lone:true})}
+}
+// «Мирский» и «Мирского» дают одну основу «мирск»
+const ENDS=['ыми','ими','ого','ому','ой','ым','им','ий','ом','ую','ая','ых','ей','а','у','е','ы'];
+function stem(w){w=w.toLowerCase();for(const e of ENDS){if(w.length-e.length>=4&&w.endsWith(e))return w.slice(0,-e.length)}return w}
+function personKey(m,kind){
+  const p=m.replace(/\./g,'. ').split(/\s+/).filter(Boolean);
+  let sur,ini;
+  if(kind==='full'){sur=p[0];ini=p[1][0]}else if(kind==='si'){sur=p[0];ini=p[1][0]}else{sur=p[p.length-1];ini=p[0][0]}
+  return {key:stem(sur)+'|'+ini.toUpperCase(),st:stem(sur)};
+}
+// «Слово И.О. Слово»: правило «Фамилия И.О.» и правило «И.О. Фамилия» делят инициалы, а pick оставил бы то, что левее,
+// и «Подписал И.С. Петров» отдал бы «Петров» модели. Инициалы уходят к слову справа, кроме случаев, когда справа
+// служебное слово («Петров И.С. Директор»), ячейка через табуляцию или оно само начинает «Фамилия И.О.» («Петров И.С. Сидоров А.В.»).
+// Проигравшее слово прячется отдельно, если похоже на фамилию по форме (SURN_SHAPE, SURN_WIDE) или на неё не похоже ни одно из двух
+const looksSurname=w=>!NOT_PERSON.test(w)&&!ABBR.test(w)&&!isFirst(w)&&w.split('-').every(x=>SURN_SHAPE.test(x.toLowerCase())||SURN_WIDE.test(x.toLowerCase()));
+function initialsClash(text,hits){
+  const si=hits.filter(h=>h.pk==='si'),is=hits.filter(h=>h.pk==='is'),drop=new Set();
+  for(const b of is){const a=si.find(x=>x.s<b.s&&x.e>b.s);if(!a)continue;
+    const w1=text.slice(a.s,a.e).match(/^\S+/)[0],w2=text.slice(b.s,b.e).match(/\S+$/)[0].replace(/^(?:[А-ЯЁ]\.)+/,'');
+    const w2s=b.e-w2.length,gapL=text.slice(a.s+w1.length,b.s),gapR=text.slice(a.e,w2s);
+    const right=!(NOT_PERSON.test(w2)||ABBR.test(w2)||si.some(x=>x.s===w2s)||gapR.includes('\t')&&!gapL.includes('\t'));
+    const [win,lose,lw,ls]=right?[b,a,w1,a.s]:[a,b,w2,w2s];drop.add(lose);
+    // ни одно слово не похоже на фамилию («Белых И.С. Подписал»): где фамилия, неизвестно, прячутся оба; такое слово не связывает падежи
+    const sure=looksSurname(lw);if(!sure&&(NOT_PERSON.test(lw)||ABBR.test(lw)||looksSurname(right?w2:w1)))continue;
+    const k=personKey(lw+' '+win.value.match(/[А-ЯЁ](?=\.)/)[0]+'.','si');hits.push({t:'PERSON',s:ls,e:ls+lw.length,value:lw,key:k.key,st:sure?k.st:null})}
+  for(let i=hits.length-1;i>=0;i--)if(drop.has(hits[i]))hits.splice(i,1);
+}
+// Номера договоров и документов. Код: буквы и цифры через «-», «/», «.», хотя бы одна цифра
+const NUM='(?=[0-9A-Za-zА-ЯЁа-яё/.-]*\\d)[0-9A-Za-zА-ЯЁа-яё]+(?:[-/.][0-9A-Za-zА-ЯЁа-яё]+)*';
+const isDate=v=>new RegExp(`^${DATE1}$`).test(v)||/^\d{1,2}[./-]\d{1,2}[./-]\d{2,4}$/.test(v);
+const nDig=v=>(v.match(/\d/g)||[]).length;
+// похоже на код документа, а не на пункт договора (2.3.4), счёт учёта (60.01), размер (50х50), закон (152-ФЗ)
+const codeLike=v=>nDig(v)>0&&!isDate(v)&&!/^\d+(?:\.\d+)+$/.test(v)&&!/\d[хx×*]\d/i.test(v)&&!/-(?:ФЗ|ФКЗ|КЗ)$/i.test(v)&&
+  (/[A-Za-zА-ЯЁа-яё]/.test(v)?nDig(v)>=2:/[/-]/.test(v)&&nDig(v)>=3);
+// документы сделки; трудовой договор, приказ, протокол, доверенность и приложение сюда не входят
+const DOCKW=new RegExp(`(?<![${L}a-z])(?:договор[${L}]{0,3}|дог\\.|контракт[${L}]{0,3}|(?:доп(?:олнительн[${L}]+|\\.)\\s+)?соглашени[${L}]{0,2}|ДС|акт(?:а|у|ом|е|ы|ов)?|сч[её]т(?:а|у|ом|е)?(?:[-\\s]фактур[${L}]{0,2}|\\s+на\\s+оплату)?|накладн[${L}]{0,3}|УПД|ТТН|спецификаци[${L}]{0,2}|заказ(?:а|у|ом|е)?|заявк[${L}]{0,2}|претензи[${L}]{0,2}|рекламаци[${L}]{0,2}|плат[её]жн[${L}]{0,3}\\s+поручени[${L}]{0,2}|с\\/ф|исх\\.?|вх\\.?)(?![${L}a-z])`,'gi');
+const AFTERKW=new RegExp(`^((?:\\s+[${L}]+(?:-[${L}]+)?){0,3}?)(?:\\s+от\\s+${DATE1}(?:\\s?г(?:ода|\\.)?)?)?:?\\s*(№|N|No\\.?)?\\s*(${NUM})`,'i');
+const CHAIN=new RegExp(`^(?:\\s+от\\s+${DATE1}(?:\\s?г(?:ода|\\.)?)?)?(?:\\s*\\([^)\\n]{0,40}\\))?\\s*(?:,|;|\\sи)\\s*(?:№|N)\\s*(${NUM})`,'i');
+const OTDATE=new RegExp(`^\\s+от\\s+${DATE1}`,'i');
+// унифицированные формы: КС-2, ТОРГ-12, ОС-3, ИНВ-19, М-15 с уточнением через точку
+const UFORM=/^(?:[А-Я]{1,4}\.)?(?:КС|ТОРГ|ОС|ОС-\d+[А-Я]?|ИНВ|МХ|ТМ|Т|М|ФМУ)-\d{1,2}(?:\.\d+)?[а-я]?$/;
+// номер документа 1С без «№»: «Поступление товаров и услуг ТК00000123 от 01.03.2017», «Списание с расчётного счёта 00000006 от …»
+const NUM1C=new RegExp(`(?<![0-9A-Za-zА-ЯЁа-яё/-])((?:[A-ZА-ЯЁ0-9]{1,6}-)?[A-ZА-ЯЁ]{0,4}\\d{4,})(?=\\s+от\\s+${DATE1})`,'g');
+function docNums(text,hits){
+  const add=(s,v)=>hits.push({t:'ID',s,e:s+v.length,value:v,key:'id|'+v.toUpperCase()});
+  let m;DOCKW.lastIndex=0;
+  while((m=DOCKW.exec(text))){
+    const kw=m[0],next=text.slice(m.index+kw.length,m.index+kw.length+200);
+    // «счёт 60» это счёт учёта, «исх.» без номера не документ: здесь нужен «№»
+    if((/^(?:сч[её]т|исх|вх)/i.test(kw)&&!/фактур|оплат/i.test(kw)||kw==='ДС')&&!/^\s*(?:№|N)/.test(next))continue;
+    if(/^дс$/i.test(kw)&&kw!=='ДС')continue;
+    if(/^договор/i.test(kw)&&new RegExp(`трудов[${L}]*\\s+$`,'i').test(text.slice(Math.max(0,m.index-20),m.index)))continue;
+    let a=AFTERKW.exec(next.slice(0,160)),base=m.index+kw.length;if(!a)continue;
+    // «акт по форме КС-2 № 15»: название бланка пропустить, номер искать дальше
+    if(new RegExp(`форм[${L}]*`,'i').test(a[1])||UFORM.test(a[3])){base+=a[0].length;a=AFTERKW.exec(text.slice(base,base+120));if(!a||!a[2])continue}
+    const v=a[3],hasNo=!!a[2],vs=base+a[0].length-v.length;
+    const pure=/^\d+$/.test(v),dated=OTDATE.test(text.slice(vs+v.length,vs+v.length+40));
+    // без «№» нужен код или дата следом; чистые цифры с «№»: от трёх цифр или с датой («Спецификация № 1» остаётся)
+    if(UFORM.test(v))continue;
+    const ok=pure?(hasNo?(v.length>=3||dated):dated&&!a[1]):codeLike(v);
+    if(!ok)continue;
+    add(vs,v);let pos=vs+v.length,c;
+    while((c=CHAIN.exec(text.slice(pos,pos+120)))){const w=c[1],ws=pos+c[0].length-w.length;if(!codeLike(w)&&!/^\d{3,}$/.test(w))break;add(ws,w);pos=ws+w.length}
+  }
+  NUM1C.lastIndex=0;
+  while((m=NUM1C.exec(text))){const v=m[1];if(/^[A-ZА-ЯЁ]|^0|-/.test(v)||v.length>=7)add(m.index,v)}
+}
+// Таблицы: ячейки через табуляцию (xlsx, csv) или « | » (docx). Ячейка целиком в виде кода документа
+const NUMRE=new RegExp(`^${NUM}$`);
+const cellCode=v=>v.length<=30&&NUMRE.test(v)&&codeLike(v)&&(v.match(/[A-Za-zА-ЯЁа-яё]/g)||[]).length<=6&&(/[/-]/.test(v)||nDig(v)>=4&&/[A-Za-zА-ЯЁа-яё]/.test(v));
+// число из Excel в экспоненте: «7.728699517E9» это ИНН числом
+const EXP=/^\d\.\d+E\+?\d{1,2}$/i;
+// колонка по заголовку: ИНН без контрольной суммы, номер договора из одних цифр, дата рождения числом из Excel
+const COLS=[
+  {re:/^(?:№|номер)\s*(?:договора|контракта|документа|сч[её]та|накладной|заказа)$/i,t:'ID',ok:v=>NUMRE.test(v)&&!isDate(v)},
+  {re:/^ИНН(?:\s|$)/,t:'INN',ok:v=>/^(?:\d{10}|\d{12})$/.test(v)},
+  {re:/^КПП(?:\s|$)/,t:'KPP',ok:v=>/^\d{9}$/.test(v)},
+  {re:/^(?:дата рождения|д\.\s?р\.?)$/i,t:'DOB',ok:v=>/\d/.test(v)},
+];
+function tableCells(text,hits){
+  let cols=[],off=0;
+  for(const line of text.split('\n')){
+    if(/^=== /.test(line))cols=[];
+    const sep=line.includes('\t')?'\t':line.includes(' | ')?' | ':null;
+    if(sep){
+      const cells=[];let p=0;for(const c of line.split(sep)){cells.push({v:c.trim(),s:off+p+c.length-c.trimStart().length});p+=c.length+sep.length}
+      const head=cells.map((c,i)=>{const k=COLS.find(k=>k.re.test(c.v));return k&&{i,k}}).filter(Boolean);
+      if(head.length)cols=head;
+      else{
+        for(const {i,k} of cols){const c=cells[i];if(c&&c.v&&k.ok(c.v))hits.push({t:k.t,s:c.s,e:c.s+c.v.length,value:c.v,key:k.t==='ID'?'id|'+c.v.toUpperCase():digits(c.v)})}
+        for(const c of cells){if(!c.v)continue;
+          if(cellCode(c.v)&&!EXP.test(c.v))hits.push({t:'ID',s:c.s,e:c.s+c.v.length,value:c.v,key:'id|'+c.v.toUpperCase()});
+          else if(EXP.test(c.v)){const n=BigInt(Math.round(Number(c.v))).toString();if(innOk(n))hits.push({t:'INN',s:c.s,e:c.s+c.v.length,value:c.v,key:n})}}
+      }
+    }
+    off+=line.length+1;
+  }
+}
+// Суммы: число с валютой, сумма прописью рядом с числом или отдельно, число с копейками (1 284 500,00)
+const NW='(?:ноль|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять|одиннадцать|двенадцать|тринадцать|четырнадцать|пятнадцать|шестнадцать|семнадцать|восемнадцать|девятнадцать|двадцать|тридцать|сорок|пятьдесят|шестьдесят|семьдесят|восемьдесят|девяносто|сто|двести|триста|четыреста|пятьсот|шестьсот|семьсот|восемьсот|девятьсот|тысяч[аи]?|миллион(?:а|ов)?|миллиард(?:а|ов)?)';
+const NWS=`${NW}(?:\\s+${NW})*`;
+const CUR='(?:₽|руб(?:\\.|лей|ля|ль)?|€|евро|\\$|долл(?:\\.|аров|ара)?|USD|EUR|RUB)';
+const KOP='(?:\\s*\\d{2}\\s*коп(?:еек|ейки|ейка|\\.)?)?';
+const SUMS=[
+  new RegExp(`(?<![\\d.,])(?:\\d{1,3}(?:[ \\u00A0\\u202F]\\d{3})+|\\d+)(?:[.,]\\d{1,2})?(?:\\s*\\(${NWS}\\))?[ \\u00A0]?(?:(?:тыс|млн|млрд)\\.?[ \\u00A0]?)?${CUR}${KOP}(?![\\wа-яё])`,'gi'),
+  new RegExp(`(?<![${L}])${NWS}\\s+(?:рубл[${L}]*|евро|доллар[${L}]*)${KOP}`,'gi'),
+  /(?<![\d.,])(?:\d{1,3}(?:[ \u00A0\u202F]\d{3})+|\d{3,}),\d{2}(?!\d|[ \u00A0]?(?:%|кв|мм|см|кг|км|шт|м\b|т\b|л\b))/g,
+];
+// ключ суммы по числу и валюте: «4 896 000,00 руб.» и «4 896 000,00» одна сумма; прописью без числа по тексту
+function amountKey(v){const m=v.match(/(\d{1,3}(?:[ \u00A0\u202F]\d{3})+|\d+)(?:[.,](\d{1,2}))?/);if(!m)return 'sum|'+v.replace(/\s+/g,' ').toLowerCase();
+  const mul=/млрд/i.test(v)?1e9:/млн/i.test(v)?1e6:/тыс/i.test(v)?1e3:1,cur=/€|евро|EUR/i.test(v)?'eur':/\$|долл|USD/i.test(v)?'usd':'rub';
+  return 'sum|'+(Number(m[1].replace(/\D/g,'')+'.'+(m[2]||'0'))*mul).toFixed(2)+'|'+cur}
+function amounts(text,hits){for(const re of SUMS){re.lastIndex=0;let m;while((m=re.exec(text))){const v=m[0].trimEnd();hits.push({t:'AMOUNT',s:m.index,e:m.index+v.length,value:v,key:amountKey(v)})}}}
+// Первое слово перед «… ООО», которое названием не бывает: «Оплата Ромашка ООО», «Поставщик Ромашка ООО»
+const ORG_STOP=new RegExp(`^(?:оплата|поставщик|покупател[${L}]*|контрагент[${L}]*|заказчик[${L}]*|подрядчик[${L}]*|исполнител[${L}]*|арендатор[${L}]*|арендодател[${L}]*|получател[${L}]*|плательщик[${L}]*|организаци[${L}]*|договор[${L}]*|акт|итого|сальдо|в|с|и|от|для|по|на)$`,'i');
+// название без формы и кавычек: «ООО «Каменный Мост»», «Каменный Мост ООО» → «Каменный Мост»
+const orgName=v=>v.replace(new RegExp(`^(?:${OFORM}|[${U}][${L}]+ (?:с ограниченной ответственностью|акционерное общество|некоммерческая организация|собственников [${L}]+)|[Аа]кционерное общество)\\s*`),'').replace(new RegExp(`,?\\s+(?:${OFORM})$`),'').replace(/^[«"]|[»"]+$/g,'').trim();
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let state=null;
+
+const escRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+// граница названия: «Каменный Мост-Строй» это другая фирма, чем «Каменный Мост»
+const WB='(?<![\\wА-яЁё]|[\\wА-яЁё]-)',WE='(?![\\wА-яЁё]|-[\\wА-яЁё])';
+// Падежные формы названия: «Каменного Моста», «Нева-Металлу». Слово с заглавной теряет окончание и принимает до трёх букв.
+// Беглая гласная («Ветер», «Ветра») не узнаётся. Слова заглавными и латиницей ищутся как есть
+const ORG_END=/(?:ый|ий|ой|ая|яя|ое|ее|ые|ие|а|я|о|е|ь|й|ы|и)$/;
+const TITLE_W=/^[А-ЯЁ][а-яё]+(?:-[А-ЯЁ][а-яё]+)*$/;
+function orgCases(n){const w=n.split(/\s+/);if(!w.some(x=>TITLE_W.test(x)))return null;
+  return new RegExp(WB+w.map(x=>{if(!TITLE_W.test(x))return escRe(x);const st=x.replace(ORG_END,'');return st.length>=3?escRe(st)+'[а-яё]{0,3}':escRe(x)}).join('[ \\t\\u00A0]+')+WE,'g')}
+
+// Сомнительное: правила не уверены, что это надо прятать. Три вида из PRD: слово с заглавной буквы вне словаря (NAME),
+// длинная цепочка цифр (NUM), всё со знаком @ (AT). По умолчанию прячется, человек снимает метку сам в окне проверки.
+// Слова, с которых метку сняли, лежат в сейфе (safe.skip) и больше не прячутся
+const DOUBT={NAME:1,NUM:1,AT:1};
+const dnorm=s=>s.toLowerCase().replace(/ё/g,'е');
+const doubtType=v=>v.includes('@')?'AT':/^[\d\s\u00A0-]+$/.test(v)?'NUM':'NAME';
+// ключ группы: падежные формы слова и разные написания числа идут одной строкой окна проверки
+// основа слова: окончание снимается, если остаётся три буквы и больше («Вега», «Веги», «Вегой» одно слово)
+const DENDS='иями ями ами ыми ими ого его ому ему ией ием ой ей ом ем ам ям ах ях ов ев ый ий ая яя ое ее ые ие ым им ых их ую юю ью ия ию ии а я ы и е у ю о ь й'.split(' ');
+const dstem=w=>{for(const e of DENDS)if(w.length-e.length>=3&&w.endsWith(e))return w.slice(0,-e.length);return w};
+const doubtKey=(t,v)=>t==='NUM'?digits(v):t==='AT'?dnorm(v):dnorm(v).split(/[\s\u00A0]+/).map(dstem).join(' ');
+// «Словарь»: слова, которые в деловых документах пишут с заглавной, но прятать не нужно: роли и документы сделки,
+// должности, обращения, госорганы и суды, месяцы. К основе допускается только падежное окончание: «Суда» слово, «Судаков» фамилия
+const DEND='(?:а|я|ы|и|е|у|ю|о|ь|й|ой|ей|ом|ем|ам|ям|ов|ев|ах|ях|ий|ый|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ым|им|ых|их|ую|юю|ами|ями|ыми|ими|ью|ия|ию|ии|ием|иям|иях|иями)?';
+const COMMON=new RegExp('^(?:'+('заказчик|исполнител|подрядчик|субподрядчик|генподрядчик|поставщик|покупател|продавец|продавц|арендатор|арендодател|заемщик|кредитор|должник|'+
+ 'залогодател|лицензиар|лицензиат|принципал|агент|комитент|комиссионер|грузоотправител|грузополучател|перевозчик|плательщик|получател|абонент|оператор|клиент|пользовател|'+
+ 'сторон|договор|контракт|соглашени|приложени|спецификаци|счет|счет-фактур|накладн|товар|работ|услуг|объект|продукци|оборудовани|имуществ|помещени|здани|'+
+ 'раздел|пункт|стат|стать|глав|част|закон|кодекс|устав|положени|регламент|приказ|протокол|доверенност|заявк|заявлени|уведомлени|претензи|письм|акт|реестр|ведомост|'+
+ 'обществ|компани|организаци|предприяти|учреждени|банк|филиал|отдел|цех|управлени|департамент|служб|инспекци|администраци|министерств|правительств|'+
+ 'генеральн|директор|бухгалтер|главн|руководител|начальник|заместител|менеджер|инженер|специалист|работник|работодател|сотрудник|председател|коллег|'+
+ 'российск|федераци|федеральн|государственн|муниципальн|межрайонн|арбитражн|верховн|конституци|налогов|пенсионн|гражданск|трудов|уголовн|центральн|'+
+ 'суд|фонд|област|кра|республик|район|округ|город|росси|росреестр|роспотребнадзор|роскомнадзор|ростехнадзор|росфинмониторинг|прокуратур|полици|'+
+ 'уважаем|добр|итог|дат|подпис|печат|телефон|адрес|наименовани|примечани|основани|оплат|возврат|налог|поступлени|списани|назначени|номер|'+
+ 'январ|феврал|март|апрел|июн|июл|август|сентябр|октябр|ноябр|декабр|понедельник|вторник|сред|четверг|пятниц|суббот|воскресень')+
+ ')'+DEND+'$|^(?:вы|вас|вам|вами|ваш[а-я]{0,3}|здравствуйте|спасибо|прошу|итого|всего|мая|мае|май|page|sheet|[кмг]бит|[кмг]?вт|гкал|[кмг]?гц)$');
+// География остаётся в тексте: города от ста тысяч жителей, регионы, соседние страны; название на -ск, -град, -бург тоже город
+const GEO=new RegExp('^(?:'+('москв|казан|самар|уф|перм|воронеж|краснодар|саратов|тюмен|барнаул|ярославл|владивосток|махачкал|кемеров|рязан|астрахан|пенз|тул|чебоксар|твер|'+
+ 'сургут|чит|калуг|курган|череповец|череповц|вологд|тамбов|грозн|костром|таганрог|сыктывкар|нальчик|тагил|шахт|балаших|химк|мытищ|люберц|псков|энгельс|балаков|армавир|'+
+ 'абакан|сызран|златоуст|электростал|салават|миасс|находк|керч|березник|коломн|майкоп|одинцов|ковров|серпухов|домодедов|дербент|назран|кызыл|муром|ессентук|евпатори|'+
+ 'елец|ельц|арзамас|элист|магадан|челн|стерлитамак|оскол|салехард|анадыр|биробиджан|владикавказ|киев|астан|ташкент|ереван|бишкек|беларус|белорусси|казахстан|узбекистан|'+
+ 'кита|турци|германи|украин|армени|грузи|азербайджан|таджикистан|европ|крым|кавказ|алта|сахалин|камчатк|якути|карели|чуваши|удмурти|мордови|дагестан|чечн|ингушети|хакаси|'+
+ 'буряти|калмыки|чукотк|ямал|кубан|ростов|нижн|поволжь|подмосковь|татарстан|башкортостан|башкири|урал|сибир|санкт|петербург|новгород')+
+ ')'+DEND+'$|^(?:сочи|тольятти|баку|тбилиси|душанбе|алматы|дону)$|^[а-я]{3,}(?:ск|цк|град|бург|поль)(?:а|е|у|ом|я|ю|ем)?$');
+// сокращения заглавными, которые не названия; банки остаются в тексте по правилу BANK
+const DABBR=/^(?:ИНН|КПП|ОГРН|ОГРНИП|БИК|СНИЛС|ОКПО|ОКВЭД|ОКТМО|ОКАТО|ОКОПФ|ОКФС|ОКОГУ|НДС|НДФЛ|УСН|ООО|ОАО|ЗАО|ПАО|НАО|АНО|НКО|ФИО|ГОСТ|СНИП|УПД|ТТН|ТОРГ|КОАП|ИФНС|ГИБДД|МРОТ|ЕГРЮЛ|ЕГРИП|ЕГРН|СССР|ЕАЭС|РСФСР|ИТОГО|ВСЕГО|[IVXLCM]+)$/;
+// отчество по окончанию; творительный «Ивановной» сюда не входит, под него подходит «Основной»
+const DPATR=/^[А-ЯЁ][а-яё]{2,}(?:(?:ович|евич|ьич)(?:а|у|ем|ом|е)?|(?:овн|евн|ичн)[аыеу])$/;
+function doubts(text,kept,skip,opts){
+  const out=[],open=[],cover=new Uint8Array(text.length);
+  for(const h of kept)cover.fill(1,h.s,h.e);
+  const free=(s,e)=>{for(let i=s;i<e;i++)if(cover[i])return false;return true};
+  const put=(t,s,e)=>{const value=text.slice(s,e),key=doubtKey(t,value);cover.fill(1,s,e);
+    (skip.has(t+'|'+key)?open:out).push({t,s,e,value,key,doubt:true})};
+  const lineAt=s=>{const a=text.lastIndexOf('\n',s-1)+1,b=text.indexOf('\n',s);return {a,line:text.slice(a,b<0?text.length:b)}};
+  let m;
+  // всё со знаком @, что не узнано как почта или ник
+  const at=/[^\s,;()<>«»"]*@[^\s,;()<>«»"]*/g;
+  while((m=at.exec(text))){const v=m[0].replace(/[.!?:]+$/,'');if(v.length>1&&free(m.index,m.index+v.length))put('AT',m.index,m.index+v.length)}
+  // цепочки цифр: от восьми подряд (в таблицах от девяти, суммы там остаются) или от семи с пробелами и дефисами.
+  // Число с дробной частью, разряды через пробел (1 284 500), годы через дефис и дата 2025-03-17 сюда не идут
+  const minRun=opts.sums===false?9:8,num=/(?<![\d.,])\d(?:[ \u00A0-]?\d){6,}(?![.,]?\d)/g;
+  while((m=num.exec(text))){const v=m[0],n=digits(v).length;
+    if(/^\d+$/.test(v)?n<minRun:/^\d{1,3}(?:[ \u00A0]\d{3})+$/.test(v)||/^(?:19|20)\d{2}[ -](?:19|20)\d{2}$/.test(v)||/^(?:19|20)\d{2}-\d{2}-\d{2}$/.test(v))continue;
+    if(free(m.index,m.index+v.length))put('NUM',m.index,m.index+v.length)}
+  // слова, которые в этом же тексте встречаются со строчной: обычные слова, а не названия
+  const lower=new Set(),lw=/(?<![A-Za-zА-яЁё])[а-яёa-z]{3,}/g;while((m=lw.exec(text)))lower.add(dstem(dnorm(m[0])));
+  const plain1=w=>{const n=dnorm(w);return w.length<3||!/^[A-ZА-ЯЁ]/.test(w)||/^\d+$/.test(w)||/^[А-ЯЁ]{1,3}$/.test(w)||/^[A-Z]{1,4}$/.test(w)||
+    COMMON.test(n)||GEO.test(n)||lower.has(dstem(n))||DABBR.test(w.toUpperCase())};
+  const plain=w=>BANK.test(w)||w.split('-').every(plain1);
+  // служебные строки: заголовок листа и шрифт в колонтитуле Excel (&"Times New Roman,Regular")
+  const service=s=>{const {a,line}=lineAt(s);if(line.startsWith('=== '))return true;const q=line.lastIndexOf('&"',s-a);return q>=0&&line.indexOf('"',q+2)>=s-a};
+  // название в кавычках без формы собственности: проект «Полярная звезда»
+  const quo=/[«"]([A-ZА-ЯЁ][^«»"\n.!?,:;]{1,48})[»"]/g;
+  while((m=quo.exec(text))){const v=m[1].trim(),s=m.index+1,ws=v.split(/\s+/);
+    if(ws.length>4||ws.every(plain)||BANK.test(v)||service(s)||!free(s,s+v.length))continue;put('NAME',s,s+v.length)}
+  // слова с заглавной. В начале предложения, ячейки и в заголовке заглавными буквами заглавная ничего не значит:
+  // такое слово берётся, только если оно же есть в середине предложения. Соседние слова идут одной находкой
+  const tok=/(?<![\wА-яЁё@-])[A-ZА-ЯЁ][\wА-яЁё]{2,}(?:-[\wА-яЁё]+)*/g,toks=[];
+  while((m=tok.exec(text))){const w=m[0],s=m.index,e=s+w.length;
+    if(!free(s,e)||/_/.test(w)||/^[A-ZА-ЯЁ]{1,3}\d/.test(w)||plain(w)||service(s))continue;
+    // «Калужский колледж», «Складской комплекс»: прилагательное перед словом со строчной; рядом слово «банк»
+    if(/(?:ск|цк)(?:ий|ая|ое|ого|ой|ому|ую|им|ом|их|ие|ими)$/.test(w)&&/^[ \u00A0]+[а-яё]/.test(text.slice(e,e+3)))continue;
+    if(/^[ \u00A0]+банк/i.test(text.slice(e,e+6))||/банк[а-яё]{0,2}[ \u00A0]+$/i.test(text.slice(Math.max(0,s-9),s)))continue;
+    let i=s-1;while(i>=0&&/[ \u00A0«"(\[]/.test(text[i]))i--;
+    let start=i<0||/[.!?…\n\t|]/.test(text[i])||/[;,]/.test(text[i])&&i===s-1||/[-–—]/.test(text[i])&&i<s-1;
+    const {a,line}=lineAt(s);
+    if(!start)start=!/[A-Za-zА-яЁё]/.test(line.slice(0,s-a))||w===w.toUpperCase()&&line===line.toUpperCase();
+    toks.push({w,s,e,start,key:doubtKey('NAME',w)})}
+  const mid=new Set(toks.filter(t=>!t.start).map(t=>t.key));
+  const ok=toks.filter(t=>!t.start||mid.has(t.key)||DPATR.test(t.w));
+  for(let i=0;i<ok.length;i++){let j=i;while(ok[j+1]&&/^[ \u00A0]$/.test(text.slice(ok[j].e,ok[j+1].s)))j++;
+    put('NAME',ok[i].s,ok[j].e);i=j}
+  return {hits:out,open};
+}
+
+// opts.sums: прятать суммы. По умолчанию да, как для текста; для таблиц вызывающий код передаёт {sums:false}.
+// opts.safe: сейф из src/safe.mjs. Известное сейфу значение получает прежнюю метку, новое следующий свободный номер;
+// результат несёт обновлённый сейф (safe) и число новых записей (added). Без сейфа маска начинает новый
+function mask(text,terms,opts={}){
+  const safe=opts.safe||safeNew();
+  const hits=[];
+  const skip=new Set((safe.skip||[]).map(v=>{const k=doubtType(v);return k+'|'+doubtKey(k,v)}));
+  for(const d of DET){d.re.lastIndex=0;let m;while((m=d.re.exec(text))){
+    const raw=m[0];let s=m.index,e=s+raw.length,value=raw;
+    if(d.skip&&d.skip(raw))continue;
+    if(d.val){const v=d.val(raw);const off=raw.lastIndexOf(v);if(off>=0){s+=off;e=s+v.length;value=v}}
+    if(d.org){ // «Каменный Мост ООО»: срезать слова вроде «Оплата» в начале, банки оставить
+      let w=value.split(/ +/);while(w.length>1&&ORG_STOP.test(w[0].replace(/[,:.]$/,''))){s+=w[0].length+1;w.shift()}
+      value=text.slice(s,e);const name=value.replace(new RegExp(`,?\\s+(?:${OFORM})$`),'');
+      // «Центральный АО» в адресе это административный округ
+      if(/^[А-ЯЁ][а-яё]+(?:ский|цкий|ный|ной|ий)\s+АО$/.test(value))continue;
+      if(BANK.test(value)||!/[A-Za-zА-ЯЁа-яё]{2}/.test(name)||ORG_STOP.test(name)||/^(?:ИНН|КПП|ОГРН|БИК)$/.test(name))continue;
+      hits.push({t:'ORG',s,e,value,key:orgKey(name)});continue}
+    let key;
+    if(d.form){hits.push({t:'PERSON',s,e,value,key:'form|'+value.toLowerCase().replace(/\s+/g,' '),st:null});continue}
+    if(d.person){const k=personKey(value,d.person);key=k.key;hits.push({t:'PERSON',s,e,value,key,st:k.st,full:d.person==='full',pk:d.person});continue}
+    key=d.key?d.key(value):digits(value)||value.toLowerCase();
+    hits.push({t:d.t,s,e,value,key});
+  }}
+  initialsClash(text,hits);
+  personRuns(text,hits);
+  // свои слова: поле «Что ещё спрятать» и словарь сейфа
+  const seen=new Set();
+  for(const w of [...terms,...safe.words]){const k=w.toLowerCase();if(seen.has(k))continue;seen.add(k);
+    const re=new RegExp(escRe(w),'gi');let m;while((m=re.exec(text)))hits.push({t:'TERM',s:m.index,e:m.index+m[0].length,value:m[0],key:k})}
+  docNums(text,hits);
+  tableCells(text,hits);
+  if(opts.sums!==false)amounts(text,hits);
+  // написания из сейфа: известное значение прячется прежней меткой и там, где правила его не нашли
+  for(const k of safeKnownForms(safe,{sums:opts.sums!==false})){const n=k.form.length;
+    if(DOUBT[k.t]&&skip.has(k.t+'|'+doubtKey(k.t,k.form)))continue; // метку сняли: слово из сейфа больше не прячется
+    for(let i=text.indexOf(k.form);i>=0;i=text.indexOf(k.form,i+1))
+      if(!/[\wА-яЁё]/.test(text[i-1]||'')||!/[\wА-яЁё]/.test(k.form[0]))if(!/[\wА-яЁё]/.test(text[i+n]||'')||!/[\wА-яЁё]/.test(k.form[n-1]))
+        hits.push({t:k.t,s:i,e:i+n,value:k.form,key:'safe|'+k.tag,safeTag:k.tag,weak:true})}
+  // Название организации, найденное с формой, прячется и без формы: «Ромашкин Двор, тел.» получает ту же метку ORG, а не ФИО.
+  // Названия из сейфа тоже: фирма из прежнего документа прячется и там, где формы нет. Падежные формы той же меткой
+  const orgs=new Map();for(const h of hits)if(h.t==='ORG'&&!h.safeTag){const n=orgName(h.value);if(n.length>=4&&!orgs.has(n))orgs.set(n,{key:h.key})}
+  for(const r of safe.records)if(r.type==='ORG')for(const f of r.forms){const n=orgName(f);if(n.length>=4&&!orgs.has(n))orgs.set(n,{key:orgKey(n),tag:r.tag})}
+  for(const [n,o] of orgs){const re=new RegExp(WB+escRe(n)+WE,'g'),cs=orgCases(n);let m;
+    while((m=re.exec(text)))hits.push({t:'ORG',s:m.index,e:m.index+n.length,value:n,key:o.key,safeTag:o.tag});
+    if(cs)while((m=cs.exec(text)))if(m[0]!==n)hits.push({t:'ORG',s:m.index,e:m.index+m[0].length,value:m[0],key:o.key,safeTag:o.tag})}
+  // при равной длине организация важнее человека: «Ромашкин Двор» не ФИО
+  const pick=list=>{list.sort((a,b)=>a.s-b.s||(b.e-b.s)-(a.e-a.s)||(a.weak||a.lone?1:0)-(b.weak||b.lone?1:0)||(b.t==='ORG')-(a.t==='ORG'));
+    const out=[];let end=-1;for(const h of list){if(h.s>=end){out.push(h);end=h.e}}return out};
+  // Фамилия без инициалов, если человек уже встречался полностью; словарь только из надёжных находок без пересечений.
+  // Люди из сейфа тоже: «Петрову» в новом документе получит метку «Петров И.С.» из прежнего
+  const strong=pick(hits.filter(h=>!h.lone));
+  const stems=new Map();for(const h of strong)if(h.t==='PERSON'&&h.st&&!stems.has(h.st))stems.set(h.st,h.key);
+  // фамилия, под которой в сейфе два разных человека, не связывается
+  const fromSafe=new Map();for(const r of safe.records)if(r.type==='PERSON')for(const k of r.keys){const i=k.indexOf('|'),st=k.slice(0,i);if(i>0&&st!=='np'&&st!=='form'&&!/\|\?$/.test(k)){const o=fromSafe.get(st);fromSafe.set(st,o&&o.tag!==r.tag?{amb:true}:{tag:r.tag,key:k})}}
+  for(const [st,o] of fromSafe)if(!o.amb&&!stems.has(st))stems.set(st,o.key);
+  for(const h of hits)if(h.lone&&stems.has(h.st))h.key=stems.get(h.st);
+  const wre=new RegExp(`[${U}][${L}]{3,}`,'g');let m;
+  while((m=wre.exec(text))){const k=stems.get(stem(m[0]));if(k)hits.push({t:'PERSON',s:m.index,e:m.index+m[0].length,value:m[0],key:k,weak:true})}
+  const sure=pick(hits),dz=opts.doubt?doubts(text,sure,skip,opts):{hits:[],open:[]};
+  const kept=dz.hits.length?[...sure,...dz.hits].sort((a,b)=>a.s-b.s):sure;
+  // сущности документа по ключу, метки им даёт сейф
+  const ents=new Map();
+  for(const h of kept){const vk=h.t+'::'+h.key;let v=ents.get(vk);
+    if(!v){v={t:h.t,key:h.key,value:h.value,forms:new Set()};ents.set(vk,v)}
+    if(h.safeTag&&!v.safeTag)v.safeTag=h.safeTag;
+    if(h.t==='PERSON'&&h.full&&v.value.split(' ').length<3)v.value=h.value;
+    v.forms.add(h.value)}
+  const vault=[...ents.values()],mg=safeMerge(safe,vault.map(v=>({...v,forms:[...v.forms]})),{now:opts.now});
+  vault.forEach((v,i)=>{v.tag=mg.tags[i];v.fresh=mg.fresh[i]});
+  for(const h of kept)h.tag=ents.get(h.t+'::'+h.key).tag;
+  let out='',before='',after='',pos=0;
+  for(const h of kept){const chunk=text.slice(pos,h.s);out+=chunk;before+=esc(chunk);after+=esc(chunk);
+    out+=h.tag;const dz=DOUBT[h.t]?` data-open="${esc(h.tag)}"`:'';
+    before+=`<mark class="${h.t}"${dz} title="${LABEL[h.t]} → ${h.tag}">${esc(text.slice(h.s,h.e))}</mark>`;after+=`<span class="tag ${h.t}">${esc(h.tag)}</span>`;pos=h.e}
+  const tail=text.slice(pos);out+=tail;before+=esc(tail);after+=esc(tail);
+  return {masked:out,before,after,hits:kept,vault,safe:mg.safe,added:mg.added,open:dz.open};
+}
+
+// Что могло проскочить: оставшиеся длинные числа, отчества, пары слов с заглавной, @
+function leaks(masked){
+  const clean=masked.replace(TAG_ANY,' ');const found=[];
+  const add=(why,re)=>{let m;re.lastIndex=0;while((m=re.exec(clean)))found.push([why,m[0].trim()])};
+  add('длинное число — ИНН, счёт, номер договора?',/(?<![\d.])\d[\d -]{8,}\d(?![\d.])/g);
+  add('похоже на отчество',new RegExp(`[${U}][${L}]+(?:ович|евич|овна|евна|ична)[${L}]*`,'g'));
+  // пары слов с заглавной, кроме договорной лексики: «Товара Исполнителем» — не человек
+  const STOP=/^(заказчик|исполнител|товар|сторон|договор|приложени|российск|федераци|регламент|устав|покупател|поставщик|арендатор|арендодател|генеральн|директор|общество|акционерн|банк|раздел|пункт|соглашени|работник|работодател|подрядчик|клиент|абонент|оператор|москв|екатеринбург|урал)/i;
+  {const re=new RegExp(`(?<=[${L},]\\s)([${U}][${L}]{2,})\\s([${U}][${L}]{3,})`,'g');let m;
+   while((m=re.exec(clean))){if(!STOP.test(m[1])&&!STOP.test(m[2]))found.push(['похоже на имя и фамилию',m[0]])}}
+  add('знак @',/\S*@\S*/g);
+  const seen=new Set();return found.filter(([w,v])=>{const k=w+v;if(seen.has(k))return false;seen.add(k);return true});
+}
+
+// o.scroll=false: перемаскировать без прокрутки, например после открытия сейфа
+function render(o={}){
+  const text=document.getElementById('src').value;if(!text.trim())return;
+  if(state&&text!==state.text)baseSafe=curSafe; // новый документ: прежний уже в сейфе
+  const terms=document.getElementById('terms').value.split(',').map(s=>s.trim()).filter(s=>s.length>1);
+  baseSafe=safeSetWords(baseSafe,terms);
+  const sums=document.getElementById('sums');state=mask(text,[],{sums:!sums||sums.checked,safe:baseSafe,doubt:true});state.text=text;curSafe=state.safe;
+  document.getElementById('out').hidden=false;
+  document.getElementById('before').innerHTML=state.before;
+  document.getElementById('after').innerHTML=state.after;
+  const byT={};for(const h of state.hits)byT[h.t]=(byT[h.t]||0)+1;
+  document.getElementById('s-check').innerHTML=Object.entries(byT).map(([t,n])=>`<span class="${t}">${LABEL[t]} · ${n}</span>`).join('')||'<span>Ничего не найдено</span>';
+  document.getElementById('cntBefore').textContent=`замен: ${state.hits.length}, уникальных: ${state.vault.length}`;
+  document.getElementById('vault').innerHTML=state.vault.map(v=>`<tr><td><span class="tag ${v.t}">${esc(v.tag)}</span>${v.fresh?' <span class="note">новая</span>':''}</td><td>${LABEL[v.t]}</td><td>${esc(v.value)}</td><td>${[...v.forms].map(f=>`<code>${esc(f)}</code>`).join(', ')}</td></tr>`).join('');
+  // с чего человек сам снял метку, в контроле утечки повторно не показывается
+  const lk=leaks(state.masked).filter(([,v])=>!state.open.some(o=>v.includes(o.value)||o.value.includes(v))),c=document.getElementById('check');
+  c.className='check'+(lk.length?' warn':'');
+  c.innerHTML=lk.length?`<b>Проверьте руками перед отправкой: ${lk.length}</b>Автомат не уверен, что это не персональные данные. Впишите нужное в поле «Что ещё спрятать» и нажмите «Замаскировать» ещё раз.<ul>${lk.map(([w,v])=>`<li><code>${esc(v)}</code> — ${w}</li>`).join('')}</ul>`
+    :'<b>Контроль утечки пройден</b>Подозрительных чисел, отчеств и пар «Имя Фамилия» в тексте с метками не осталось. Это не гарантия: смысловые подсказки («директор филиала в Уфе») автомат не видит.<br>Просмотрите текст сами. Если осталось название фирмы без ООО или АО, впишите его в поле «Что ещё спрятать» и нажмите «Замаскировать» ещё раз.';
+  STEPS.forEach((b,k)=>{b.disabled=false;b.classList.toggle('done',k===0)});
+  review();
+  safeUI();
+  if(o.scroll!==false)go(1);
+}
+const STEPS=[...document.querySelectorAll('#steps button')];
+function setStep(i){STEPS.forEach((b,k)=>b.classList.toggle('on',k===i))}
+let lock=0;
+function go(i){setStep(i);lock=Date.now()+900;const id=STEPS[i].dataset.go;
+  document.getElementById(i===2?'s-check':id).scrollIntoView({behavior:'smooth',block:'start'});
+  if(i===2){const p=document.getElementById('s-after');p.classList.remove('flash');void p.offsetWidth;p.classList.add('flash')}}
+STEPS.forEach((b,i)=>b.onclick=()=>go(i));
+// подсветка шага по прокрутке: активен последний раздел, чей верх уже под панелью шагов
+addEventListener('scroll',()=>{if(document.getElementById('out').hidden||Date.now()<lock)return;let cur=0;
+  STEPS.forEach((b,i)=>{const el=document.getElementById(b.dataset.spy||b.dataset.go);if(el.getBoundingClientRect().top<innerHeight*0.45)cur=i});
+  if(innerHeight+scrollY>=document.body.scrollHeight-4)cur=STEPS.length-1;setStep(cur)},{passive:true});
+
+// Окно проверки. Уверенные находки по типам, сомнительное отдельно и под меткой. Пока человек не подтвердил просмотр,
+// файл, текст с метками и копирование закрыты. Любая новая маскировка и правка текста сбрасывают подтверждение
+let reviewed=false,stale=false;
+const DZ_TITLE={NAME:'Слова с заглавной буквы, которых нет в словаре Маски',NUM:'Длинные числа без подписи',AT:'Со знаком @'};
+const places=n=>`${n} ${n%10===1&&n%100!==11?'место':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'места':'мест'}`;
+// находки по меткам: {t, tag, forms, n}; у сомнительных ещё кусок текста вокруг первого места
+function groups(){
+  const by=new Map();
+  for(const h of state.hits){let g=by.get(h.tag);
+    if(!g){g={t:h.t,tag:h.tag,forms:[],n:0,ctx:state.text.slice(Math.max(0,h.s-40),h.e+40).replace(/\s+/g,' ')};by.set(h.tag,g)}
+    g.n++;if(!g.forms.includes(h.value))g.forms.push(h.value)}
+  return [...by.values()];
+}
+function gate(){
+  const ok=!!state&&reviewed&&!stale;
+  for(const id of ['dlMasked','copy'])document.getElementById(id).disabled=!ok;
+  document.getElementById('dlFile').disabled=!ok||!ready;
+  document.getElementById('gate').className='check'+(ok?'':' warn');
+  document.getElementById('okReview').hidden=ok||stale;
+  const n=state?groups().filter(g=>DOUBT[g.t]).length:0;
+  document.getElementById('gateTitle').textContent=ok?'Проверка пройдена':stale?'Текст изменён':'Сохранение закрыто';
+  document.getElementById('gateText').textContent=ok?'Файл и текст с метками можно скачать и скопировать. После новой маскировки проверку нужно пройти заново.'
+    :stale?'Нажмите «Замаскировать» и пройдите проверку заново. До этого файл и текст с метками не отдаются.'
+    :`Скачать файл, скачать текст с метками и скопировать его можно после проверки. ${n?`Просмотрите сомнительные места, их ${n}, и текст в панели «После».`:'Сомнительных мест нет, просмотрите текст в панели «После».'} Потом нажмите кнопку.`;
+}
+function review(){
+  reviewed=false;stale=false;offerSel('');
+  const all=groups(),sure=all.filter(g=>!DOUBT[g.t]),dz=all.filter(g=>DOUBT[g.t]);
+  const few=(a,n=8)=>a.slice(0,n).map(esc).join(', ')+(a.length>n?` и ещё ${a.length-n}`:'');
+  const byT=new Map();for(const g of sure){if(!byT.has(g.t))byT.set(g.t,[]);byT.get(g.t).push(g)}
+  let html='<div class="rv"><b>'+(sure.length?`Спрятано уверенно: ${places(sure.reduce((a,g)=>a+g.n,0))}`:'Уверенных находок нет')+'</b>'+
+    (sure.length?[...byT].map(([t,gs])=>`<div class="rv-row"><span class="${t}">${LABEL[t]} · ${gs.length}</span><span>${few(gs.map(g=>g.forms[0]))}</span></div>`).join('')
+      :'<span class="note">Правила не нашли в документе ни людей, ни реквизитов, ни организаций. Это не значит, что их там нет. Проверьте сомнительное ниже и просмотрите текст сами.</span>')+'</div>';
+  html+='<div class="rv"><b>'+(dz.length?`Сомнительное, тоже спрятано: ${dz.length}`:'Сомнительных мест нет')+'</b>'+
+    (dz.length?'<span class="note">Маска не знает, нужно ли это прятать, поэтому спрятала. Щелчок по слову снимает метку со всех его мест в документе. Сейф запомнит это решение для следующих документов.</span>':'');
+  for(const t of Object.keys(DZ_TITLE)){const gs=dz.filter(g=>g.t===t);if(!gs.length)continue;
+    html+=`<div class="rv-row"><span class="${t}">${DZ_TITLE[t]} · ${gs.length}</span></div><div class="dzs">`+
+      gs.map(g=>`<button class="dz" data-open="${esc(g.tag)}" title="${esc('…'+g.ctx+'…')}">${few(g.forms,3)}${g.n>1?`<i>${places(g.n)}</i>`:''}<u>не прятать</u></button>`).join('')+'</div>'}
+  // с чего метку сняли: видно в тексте, можно вернуть под метку
+  const open=new Map();for(const o of state.open){const k=o.t+'|'+o.key;if(!open.has(k))open.set(k,{k,forms:[],n:0});const g=open.get(k);g.n++;if(!g.forms.includes(o.value))g.forms.push(o.value)}
+  if(open.size)html+=`<div class="rv-row"><span>Оставлено на виду · ${open.size}</span></div><div class="dzs">`+
+    [...open.values()].map(g=>`<button class="dz off" data-hide="${esc(g.k)}">${few(g.forms,3)}${g.n>1?`<i>${places(g.n)}</i>`:''}<u>спрятать снова</u></button>`).join('')+'</div>';
+  document.getElementById('review').innerHTML=html+'</div>';
+  gate();
+}
+const skipKey=v=>{const t=doubtType(v);return t+'|'+doubtKey(t,v)};
+function setSkip(list){baseSafe=safeSetSkip(baseSafe,list);render({scroll:false});prepareReturn()}
+// снять метку: все написания этой метки уходят в список сейфа «не прятать»
+function openDoubt(tag){const g=state&&groups().find(g=>g.tag===tag&&DOUBT[g.t]);if(g)setSkip([...(baseSafe.skip||[]),...g.forms])}
+function hideDoubt(k){setSkip((baseSafe.skip||[]).filter(v=>skipKey(v)!==k))}
+const pickEl=e=>e.target.closest?e.target.closest('[data-open],[data-hide]')||e.target:e.target;
+const noSel=()=>typeof getSelection!=='function'||!String(getSelection()).trim();
+document.getElementById('review').onclick=e=>{const d=pickEl(e).dataset||{};if(d.open)openDoubt(d.open);else if(d.hide)hideDoubt(d.hide)};
+document.getElementById('before').onclick=e=>{const d=pickEl(e).dataset||{};if(d.open&&noSel())openDoubt(d.open)};
+document.getElementById('okReview').onclick=()=>{if(!state||stale)return;reviewed=true;gate()};
+// пропущенное: выделение в панели «До» добавляется в поле «Что ещё спрятать»
+function offerSel(t){t=String(t||'').replace(/\s+/g,' ').trim();const ok=t.length>1&&t.length<=80&&!t.includes(','),b=document.getElementById('addSel');
+  document.getElementById('selBar').hidden=!ok;b.dataset.t=ok?t:'';b.textContent=ok?`Спрятать «${t}» во всём документе`:''}
+document.getElementById('before').onmouseup=()=>offerSel(typeof getSelection==='function'?getSelection():'');
+document.getElementById('addSel').onclick=()=>{const t=document.getElementById('addSel').dataset.t;if(!t)return;
+  const f=document.getElementById('terms'),cur=f.value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!cur.some(x=>x.toLowerCase()===t.toLowerCase()))cur.push(t);f.value=cur.join(', ');
+  if(typeof getSelection==='function')getSelection().removeAllRanges();render({scroll:false});prepareReturn()};
+
+// Обратная подстановка по текущему сейфу: работает и без документа, достаточно открыть сейф
+function restore(){
+  const r=safeRestore(document.getElementById('answer').value,curSafe);
+  document.getElementById('restored').innerHTML=r.parts.map(p=>p.tag?`<mark class="${p.type}" title="${esc(p.tag)}">${esc(p.text)}</mark>`
+    :p.unknown?`<mark class="unknown" title="Такой метки нет в сейфе">${esc(p.text)}</mark>`
+    :p.declined?`<mark class="unknown" title="Метка с окончанием: впишите название сами">${esc(p.text)}</mark>`:esc(p.text)).join('');
+  document.getElementById('restoredPanel').hidden=false;
+  const info=[`подставлено: ${r.replaced}`];
+  if(r.unknown.length)info.push(`нет в сейфе, оставлены как есть: ${r.unknown.join(', ')}`);
+  if(r.declined.length)info.push(`метки с окончанием, впишите сами: ${r.declined.join(', ')}`);
+  if(!curSafe.records.length)info.push('сейф пуст: откройте сейф или замаскируйте документ');
+  document.getElementById('restoreInfo').textContent=info.join(' · ');
+  document.getElementById('copyRestored').disabled=false;document.getElementById('copyRestored').dataset.t=r.text;STEPS[3].classList.add('done');setStep(3);
+}
+
+
+// Чтение docx/xlsx без библиотек: zip → deflate-raw через DecompressionStream
+// ==== модули из src/: собирает build.mjs, руками не править ====
+const __safe = (() => {
+// Сейф: метки и настоящие значения, общие для документов одного клиента или дела.
+// Только чистые функции: сейф живёт в памяти страницы и в файле у пользователя, в хранилища браузера не пишется.
+// Сейф в памяти: { name, created, changed, words: [слово], skip: [слово], records: [{ tag, type, value, forms: [написание], keys: [ключ] }] }
+// skip: сомнительные слова и числа, с которых человек снял метку в окне проверки. В следующих документах они не прячутся
+
+// Слово метки по типу находки. Единственная таблица соответствия: метка [ОРГ_1], [ФИО_2], [ДОГОВОР_3]
+const TAG_WORD = {
+  PERSON: 'ФИО', PHONE: 'ТЕЛ', EMAIL: 'ПОЧТА', INN: 'ИНН', KPP: 'КПП', OGRN: 'ОГРН', BIK: 'БИК', SNILS: 'СНИЛС',
+  PASSPORT: 'ПАСПОРТ', DOB: 'РОЖДЕНИЕ', ACCOUNT: 'СЧЁТ', CARD: 'КАРТА', ADDRESS: 'АДРЕС', ORG: 'ОРГ', TERM: 'СЛОВО',
+  ID: 'ДОГОВОР', NICK: 'НИК', DATE: 'ДАТА', AMOUNT: 'СУММА',
+  // сомнительное из окна проверки: слово с заглавной вне словаря, длинное число, всё со знаком @
+  NAME: 'НАЗВАНИЕ', NUM: 'НОМЕР', AT: 'КОНТАКТ',
+};
+const yo = s => s.toUpperCase().replace(/Ё/g, 'Е');
+const WORD_TYPE = new Map(Object.entries(TAG_WORD).map(([t, w]) => [yo(w), t]));
+const tagOf = (type, n) => `[${TAG_WORD[type]}_${n}]`;
+// Любая метка в тексте с метками: новая [ОРГ_1] и старая #ORG_1# первой версии Маски
+const TAG_ANY = new RegExp(`\\[(?:${Object.values(TAG_WORD).join('|')})_\\d+\\]|#(?:${Object.keys(TAG_WORD).join('|')})_\\d+#`, 'g');
+
+// Метка → {type, n, old}. Старые метки #ORG_1# понимаются, новые не выдаются
+function parseTag(tag) {
+  let m = /^\[([А-ЯЁA-Z]+)_(\d+)\]$/.exec(tag);
+  if (m && WORD_TYPE.has(yo(m[1]))) return { type: WORD_TYPE.get(yo(m[1])), n: +m[2], old: false };
+  m = /^#([A-Z]+)_(\d+)#$/.exec(tag);
+  if (m && TAG_WORD[m[1]]) return { type: m[1], n: +m[2], old: true };
+  return null;
+}
+
+const normKey = s => String(s).toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim();
+const normForm = s => normKey(String(s).replace(/[«»"“”„]/g, ''));
+
+const FORMAT = 'maska-safe';
+const VERSION = 1;
+
+function safeNew(name = '', now = new Date()) {
+  const d = now.toISOString();
+  return { name, created: d, changed: d, words: [], skip: [], records: [] };
+}
+
+// Файл сейфа. Записи и слова лежат в data: при шифровании его заменит поле encrypted, имя и даты останутся открытыми
+function safeSerialize(safe) {
+  return JSON.stringify({
+    format: FORMAT, version: VERSION, name: safe.name || '', created: safe.created, changed: safe.changed,
+    data: { words: safe.words, skip: safe.skip || [], records: safe.records.map(r => ({ tag: r.tag, type: r.type, value: r.value, forms: r.forms, keys: r.keys })) },
+  }, null, 1) + '\n';
+}
+
+const safeFileName = safe => `${String(safe.name || '').replace(/[\\/:*?"<>|\x00-\x1f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80) || 'без названия'}.сейф.json`;
+
+// Чтение файла сейфа: {safe} или {error} с фразой для человека. Старый сейф первой версии (список меток) тоже читается
+function safeParse(text) {
+  const fail = error => ({ error });
+  let j;
+  try { j = JSON.parse(String(text).replace(/^﻿/, '')); }
+  catch { return fail('файл повреждён или это не сейф Маски: его не удалось прочитать'); }
+  if (Array.isArray(j)) return oldSafe(j);
+  if (!j || typeof j !== 'object' || j.format !== FORMAT) return fail('это не сейф Маски, а другой файл');
+  if (typeof j.version !== 'number' || j.version > VERSION) return fail('сейф сохранён более новой версией Маски, откройте его в ней');
+  if (j.encrypted) return fail('сейф защищён паролем, эта версия Маски пароли не открывает');
+  const d = j.data;
+  if (!d || !Array.isArray(d.records) || (d.words != null && !Array.isArray(d.words)) || (d.skip != null && !Array.isArray(d.skip))) return fail('файл сейфа повреждён: нет списка записей');
+  const records = [], tags = new Set();
+  for (const [i, r] of d.records.entries()) {
+    const p = r && typeof r.tag === 'string' && parseTag(r.tag);
+    if (!p || typeof r.value !== 'string' || !r.value) return fail(`файл сейфа повреждён: в записи ${i + 1} нет метки или значения`);
+    if (r.type != null && r.type !== p.type) return fail(`файл сейфа повреждён: у метки ${r.tag} другой тип`);
+    if (tags.has(r.tag)) return fail(`файл сейфа повреждён: метка ${r.tag} записана дважды`);
+    tags.add(r.tag);
+    const strs = a => Array.isArray(a) ? a.filter(x => typeof x === 'string' && x) : [];
+    const forms = strs(r.forms);
+    records.push({ tag: r.tag, type: p.type, value: r.value, forms: forms.length ? forms : [r.value], keys: strs(r.keys) });
+  }
+  const now = new Date().toISOString();
+  return { safe: { name: typeof j.name === 'string' ? j.name : '', created: j.created || now, changed: j.changed || now,
+    words: (d.words || []).filter(w => typeof w === 'string' && w.trim()), skip: (d.skip || []).filter(w => typeof w === 'string' && w.trim()), records } };
+}
+
+// Сейф первой версии: [{tag: '#ORG_1#', type: 'Организация', value, forms}]
+function oldSafe(list) {
+  const records = [], tags = new Set();
+  for (const r of list) {
+    const p = r && typeof r.tag === 'string' && parseTag(r.tag);
+    if (!p || typeof r.value !== 'string' || tags.has(r.tag)) return { error: 'это не сейф Маски, а другой файл' };
+    tags.add(r.tag);
+    const forms = Array.isArray(r.forms) ? r.forms.filter(x => typeof x === 'string' && x) : [];
+    records.push({ tag: r.tag, type: p.type, value: r.value, forms: forms.length ? forms : [r.value], keys: [] });
+  }
+  const now = new Date().toISOString();
+  return { safe: { name: '', created: now, changed: now, words: [], skip: [], records }, old: true };
+}
+
+// ФИО для обратной подстановки: полное лучше инициалов, именительный («Петров Иван Сергеевич») лучше косвенного
+const nominative = v => /(?:ич|на)$/.test(v);
+const words3 = v => v.trim().split(/\s+/).length >= 3;
+function betterPerson(cur, v) {
+  if (!words3(v)) return false;
+  if (!words3(cur)) return true;
+  return !nominative(cur) && nominative(v);
+}
+
+// Ключ человека «фамилия|первая буква имени», у фамилии без имени «фамилия|?». Одинокая фамилия идёт к единственному
+// человеку с этой фамилией в сейфе, полное ФИО к записи, где фамилия была только одна
+function byStem(records, key) {
+  const i = key.indexOf('|');
+  if (i <= 0) return null;
+  const st = normKey(key.slice(0, i)), lone = key.slice(i + 1) === '?';
+  if (st === 'np' || st === 'form') return null;
+  const same = records.filter(r => r.type === 'PERSON' && r.keys.some(k => normKey(k).startsWith(st + '|')));
+  const fit = lone ? same : same.filter(r => r.keys.every(k => k.endsWith('|?')));
+  return fit.length === 1 ? fit[0] : null;
+}
+
+// Новый документ с сейфом. entities: сущности документа {t, key, value, forms, safeTag?} в порядке появления.
+// Сущность получает метку записи сейфа, если совпал ключ того же типа, найденная по сейфу метка (safeTag)
+// или одно из написаний; иначе следующий свободный номер своего типа. Возвращает новый сейф и метки по порядку
+function safeMerge(safe, entities, { now = new Date() } = {}) {
+  const records = safe.records.map(r => ({ ...r, forms: [...r.forms], keys: [...r.keys] }));
+  const byTag = new Map(), byKey = new Map(), byForm = new Map(), next = {};
+  const index = r => {
+    byTag.set(r.tag, r);
+    for (const k of r.keys) if (!byKey.has(r.type + '\u0001' + normKey(k))) byKey.set(r.type + '\u0001' + normKey(k), r);
+    for (const f of r.forms) if (!byForm.has(r.type + '\u0001' + normForm(f))) byForm.set(r.type + '\u0001' + normForm(f), r);
+  };
+  for (const r of records) { index(r); const p = parseTag(r.tag); next[p.type] = Math.max(next[p.type] || 0, p.n); }
+  let added = 0, changed = false;
+  const tags = [], fresh = [];
+  for (const e of entities) {
+    const forms = [...(e.forms || [e.value])];
+    // одинокая фамилия «петров|?» по ключу не ищется: её запись выбирает byStem, только если человек с такой фамилией один
+    const lone = e.t === 'PERSON' && /\|\?$/.test(e.key || '');
+    let r = (e.safeTag && byTag.get(e.safeTag)) || (e.key != null && !lone && byKey.get(e.t + '\u0001' + normKey(e.key)));
+    if (!r) for (const f of forms) if ((r = byForm.get(e.t + '\u0001' + normForm(f)))) break;
+    if (!r && e.t === 'PERSON' && e.key) r = byStem(records, e.key);
+    const isNew = !r;
+    if (isNew) {
+      const n = next[e.t] = (next[e.t] || 0) + 1;
+      r = { tag: tagOf(e.t, n), type: e.t, value: e.value, forms: [], keys: [] };
+      records.push(r); added++; changed = true;
+    }
+    if (e.key != null && !e.safeTag && (!lone || isNew) && !r.keys.some(k => normKey(k) === normKey(e.key))) { r.keys.push(e.key); changed = true; }
+    for (const f of forms) if (!r.forms.includes(f)) { r.forms.push(f); changed = true; }
+    if (r.type === 'PERSON') for (const f of [e.value, ...forms]) if (betterPerson(r.value, f)) { r.value = f; changed = true; }
+    index(r);
+    tags.push(r.tag); fresh.push(isNew);
+  }
+  return { safe: { ...safe, records, changed: changed ? now.toISOString() : safe.changed }, tags, fresh, added };
+}
+
+// Свои слова: поле «Что ещё спрятать» и словарь сейфа одно и то же
+function safeSetWords(safe, words, { now = new Date() } = {}) {
+  const out = [], seen = new Set();
+  for (const w of words) { const s = String(w).trim(), k = normKey(s); if (s.length > 1 && !seen.has(k)) { seen.add(k); out.push(s); } }
+  if (out.join('\n') === safe.words.join('\n')) return safe;
+  return { ...safe, words: out, changed: now.toISOString() };
+}
+
+// Слова, с которых снята метка в окне проверки. Список заменяется целиком: слово можно и вернуть под метку
+function safeSetSkip(safe, list, { now = new Date() } = {}) {
+  const out = [], seen = new Set();
+  for (const w of list) { const s = String(w).trim(), k = normKey(s); if (s && !seen.has(k)) { seen.add(k); out.push(s); } }
+  if (out.join('\n') === (safe.skip || []).join('\n')) return safe;
+  return { ...safe, skip: out, changed: now.toISOString() };
+}
+
+// Написания из сейфа, которые ищутся в новом документе как есть. Свои слова ищет маска сама, даты не ищутся
+// (дата выдачи паспорта совпадёт с датой договора), суммы только при включённом «прятать суммы».
+// Короткие значения и числа меньше 6 цифр не ищутся: «12» сидит в «2012»
+function safeKnownForms(safe, { sums = true } = {}) {
+  const out = [];
+  for (const r of safe.records) {
+    if (r.type === 'TERM' || r.type === 'DATE' || (r.type === 'AMOUNT' && !sums)) continue;
+    for (const f of r.forms) {
+      const v = f.trim();
+      if (v.length < 4 || /[\t\n]/.test(f) || (/^[\d\s.,\/№#()+-]+$/.test(v) && v.replace(/\D/g, '').length < 6)) continue;
+      out.push({ form: f, t: r.type, tag: r.tag });
+    }
+  }
+  return out.sort((a, b) => b.form.length - a.form.length);
+}
+
+function safeSummary(safe) {
+  const byType = {};
+  for (const r of safe.records) byType[r.type] = (byType[r.type] || 0) + 1;
+  return { records: safe.records.length, words: safe.words.length, byType };
+}
+// Содержимое без дат: изменилось ли что-то с последнего сохранения
+const safeDigest = safe => JSON.stringify([safe.name || '', safe.words, safe.records, safe.skip || []]);
+
+// Обратная подстановка. Нейросеть искажает метки: [орг_1], [ОРГ 1], ОРГ_1, \[ОРГ\_1\], [СЧЕТ_1] вместо [СЧЁТ_1].
+// Без скобок метка узнаётся, если в ней подчёркивание или слово заглавными; через пробел без скобок только известная сейфу.
+// Метка с окончанием («[ОРГ_1]а») не трогается: просклонять название автомат не умеет, такие места в списке declined.
+// Возвращает текст, куски для подсветки и списки неузнанного
+const ALT = Object.values(TAG_WORD).sort((a, b) => b.length - a.length).map(w => w.replace(/[ЁЕ]/g, '[ЁЕ]')).join('|');
+const RU = new RegExp(`(?<![\\p{L}\\p{N}_])(\\\\?\\[[ \\t]*)?(${ALT})([ \\t]*(?:\\\\?_|-)[ \\t]*|[ \\t]+)?(\\d{1,4})(?!\\p{N})([ \\t]*\\\\?\\])?`, 'giu');
+const OLD = new RegExp(`(?<![A-Za-z0-9_])(#)?(${Object.keys(TAG_WORD).join('|')})_(\\d{1,4})(?![0-9])(#)?`, 'g');
+
+function safeRestore(text, safe) {
+  const byTag = new Map(safe.records.map(r => [r.tag, r]));
+  const found = [];
+  for (const m of text.matchAll(RU)) {
+    const [raw, open, word, sep = '', num, close] = m;
+    const tag = tagOf(WORD_TYPE.get(yo(word)), +num), known = byTag.has(tag);
+    const bracket = !!(open || close), upper = word === word.toUpperCase(), under = sep.includes('_');
+    if (!bracket && !under && !(upper && sep && !/^\s+$/.test(sep)) && !(upper && known)) continue;
+    found.push({ s: m.index, e: m.index + raw.length, raw, tag, known, sure: bracket || under });
+  }
+  for (const m of text.matchAll(OLD)) {
+    const tag = `#${m[2]}_${m[3]}#`, known = byTag.has(tag);
+    if (!known && !(m[1] && m[4])) continue;
+    found.push({ s: m.index, e: m.index + m[0].length, raw: m[0], tag, known, sure: true });
+  }
+  found.sort((a, b) => a.s - b.s || b.e - a.e);
+  const parts = [], unknown = [], declined = [];
+  let pos = 0, out = '', n = 0;
+  for (const f of found) {
+    if (f.s < pos) continue;
+    if (f.s > pos) { parts.push({ text: text.slice(pos, f.s) }); out += text.slice(pos, f.s); }
+    const r = byTag.get(f.tag);
+    if (r && /^\p{L}/u.test(text.slice(f.e))) { parts.push({ text: f.raw, declined: f.tag }); declined.push(f.raw); out += f.raw; }
+    else if (r) { parts.push({ text: r.value, tag: r.tag, type: r.type }); out += r.value; n++; }
+    else if (f.sure) { parts.push({ text: f.raw, unknown: f.tag }); unknown.push(f.raw); out += f.raw; }
+    else { parts.push({ text: f.raw }); out += f.raw; }
+    pos = f.e;
+  }
+  if (pos < text.length) { parts.push({ text: text.slice(pos) }); out += text.slice(pos); }
+  return { text: out, parts, replaced: n, unknown: [...new Set(unknown)], declined: [...new Set(declined)] };
+}
+return { TAG_WORD, tagOf, TAG_ANY, parseTag, FORMAT, VERSION, safeNew, safeSerialize, safeFileName, safeParse, safeMerge, safeSetWords, safeSetSkip, safeKnownForms, safeSummary, safeDigest, safeRestore };
+})();
+const __zip = (() => {
+// Zip без библиотек: чтение в список записей и запись обратно.
+// Непереписанные записи уходят байт в байт (локальный заголовок, сжатые данные, дескриптор),
+// изменённые сжимаются deflate-raw через CompressionStream. Только веб-API: работает в браузере и в Node.
+
+// BOM оставляем в строке, чтобы переписанная часть сохранила его
+const td = new TextDecoder('utf-8', { ignoreBOM: true }), te = new TextEncoder();
+
+// CRC32 своей таблицей
+const CRC = new Uint32Array(256);
+for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; CRC[n] = c >>> 0; }
+function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+async function pipe(u8, stream) { return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer()); }
+const inflate = u8 => pipe(u8, new DecompressionStream('deflate-raw'));
+const deflate = u8 => pipe(u8, new CompressionStream('deflate-raw'));
+
+// Чтение. Возвращает {entries, comment}; у записи name, method, raw (сжатые байты), data() и setData()
+function readZip(input) {
+  // Buffer из Node режет slice без копии, поэтому приводим к обычному Uint8Array
+  const u8 = ArrayBuffer.isView(input) ? new Uint8Array(input.buffer, input.byteOffset, input.byteLength) : new Uint8Array(input);
+  const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+  let eocd = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error('не zip-архив (для docx и xlsx нужен формат Office 2007 и новее; старые .doc и .xls не поддерживаются)');
+  if (eocd >= 20 && dv.getUint32(eocd - 20, true) === 0x07064b50) throw new Error('ZIP64 не поддерживается: архив больше 4 ГБ или в нём больше 65535 файлов');
+  const disk = dv.getUint16(eocd + 4, true), n = dv.getUint16(eocd + 10, true), cdSize = dv.getUint32(eocd + 12, true), cdOff = dv.getUint32(eocd + 16, true);
+  if (n === 0xFFFF || cdOff === 0xFFFFFFFF || cdSize === 0xFFFFFFFF) throw new Error('ZIP64 не поддерживается');
+  if (disk !== 0) throw new Error('многотомный zip не поддерживается');
+  const comment = u8.slice(eocd + 22, eocd + 22 + dv.getUint16(eocd + 20, true));
+  const entries = [];
+  let p = cdOff;
+  for (let k = 0; k < n; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('битый центральный каталог zip');
+    const flags = dv.getUint16(p + 8, true), method = dv.getUint16(p + 10, true);
+    const csize = dv.getUint32(p + 20, true), usize = dv.getUint32(p + 24, true), crc = dv.getUint32(p + 16, true);
+    const nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    if (csize === 0xFFFFFFFF || usize === 0xFFFFFFFF || off === 0xFFFFFFFF) throw new Error('ZIP64 не поддерживается');
+    const nameBytes = u8.slice(p + 46, p + 46 + nl);
+    const central = u8.slice(p, p + 46 + nl + el + cl);
+    if (dv.getUint32(off, true) !== 0x04034b50) throw new Error('битый локальный заголовок zip');
+    const lnl = dv.getUint16(off + 26, true), lel = dv.getUint16(off + 28, true);
+    const dataStart = off + 30 + lnl + lel;
+    let end = dataStart + csize;
+    // дескриптор данных после сжатых байт (флаг 3): с подписью 16 байт, без неё 12
+    if (flags & 8) end += dv.getUint32(end, true) === 0x08074b50 ? 16 : 12;
+    entries.push(makeEntry({ name: td.decode(nameBytes), nameBytes, flags, method, crc, csize, usize, central,
+      local: u8.slice(off, end), raw: u8.slice(dataStart, dataStart + csize) }));
+    p += 46 + nl + el + cl;
+  }
+  return { entries, comment };
+}
+
+function makeEntry(e) {
+  e.changed = null;
+  e.data = async () => {
+    if (e.changed) return e.changed;
+    if (e.flags & 1) throw new Error(`зашифрованный файл в архиве: ${e.name}`);
+    if (e.method === 0) return e.raw;
+    if (e.method !== 8) throw new Error(`неизвестный метод сжатия ${e.method}: ${e.name}`);
+    const out = await inflate(e.raw);
+    if (crc32(out) !== e.crc) throw new Error(`не сходится CRC: ${e.name}`);
+    return out;
+  };
+  e.text = async () => td.decode(await e.data());
+  e.setData = u8 => { e.changed = typeof u8 === 'string' ? te.encode(u8) : u8; };
+  return e;
+}
+
+// Запись. Порядок записей сохраняется, непереписанные копируются как есть
+async function writeZip({ entries, comment = new Uint8Array(0) }) {
+  const parts = [], central = [];
+  let off = 0;
+  for (const e of entries) {
+    let local, cen;
+    if (!e.changed) {
+      local = e.local;
+      cen = e.central.slice();
+    } else {
+      const data = e.changed, crc = crc32(data);
+      // mimetype и пустые файлы кладём без сжатия, как принято в ODF и EPUB
+      const store = e.name === 'mimetype' || data.length === 0;
+      const comp = store ? data : await deflate(data);
+      const method = store ? 0 : 8;
+      // снимаем дескриптор данных (бит 3) и шифрование (бит 0), признак UTF-8 в имени (бит 11) остаётся
+      const flags = e.flags & ~9;
+      const cdv = new DataView(e.central.buffer, e.central.byteOffset, e.central.byteLength);
+      const time = cdv.getUint16(12, true), date = cdv.getUint16(14, true);
+      local = new Uint8Array(30 + e.nameBytes.length + comp.length);
+      const lv = new DataView(local.buffer, local.byteOffset);
+      lv.setUint32(0, 0x04034b50, true); lv.setUint16(4, 20, true); lv.setUint16(6, flags, true); lv.setUint16(8, method, true);
+      lv.setUint16(10, time, true); lv.setUint16(12, date, true); lv.setUint32(14, crc, true);
+      lv.setUint32(18, comp.length, true); lv.setUint32(22, data.length, true); lv.setUint16(26, e.nameBytes.length, true); lv.setUint16(28, 0, true);
+      local.set(e.nameBytes, 30); local.set(comp, 30 + e.nameBytes.length);
+      // в центральной записи меняем флаги, метод, CRC и размеры; дополнительное поле и комментарий оставляем
+      cen = e.central.slice();
+      const cv = new DataView(cen.buffer, cen.byteOffset);
+      cv.setUint16(6, 20, true); cv.setUint16(8, flags, true); cv.setUint16(10, method, true); cv.setUint32(16, crc, true);
+      cv.setUint32(20, comp.length, true); cv.setUint32(24, data.length, true);
+    }
+    new DataView(cen.buffer, cen.byteOffset).setUint32(42, off, true);
+    parts.push(local); central.push(cen); off += local.length;
+    if (off > 0xFFFFFFFF) throw new Error('архив больше 4 ГБ, ZIP64 не поддерживается');
+  }
+  const cdOff = off; let cdSize = 0;
+  for (const c of central) { parts.push(c); cdSize += c.length; }
+  const eocd = new Uint8Array(22 + comment.length), ev = new DataView(eocd.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(8, entries.length, true); ev.setUint16(10, entries.length, true);
+  ev.setUint32(12, cdSize, true); ev.setUint32(16, cdOff, true); ev.setUint16(20, comment.length, true); eocd.set(comment, 22);
+  parts.push(eocd);
+  const out = new Uint8Array(parts.reduce((a, b) => a + b.length, 0));
+  let q = 0; for (const x of parts) { out.set(x, q); q += x.length; }
+  return out;
+}
+
+// Сборка архива с нуля, для тестовых файлов: [[имя, строка или байты], ...]
+async function buildZip(files) {
+  const entries = files.map(([name, content]) => {
+    const nameBytes = te.encode(name);
+    const central = new Uint8Array(46 + nameBytes.length), cv = new DataView(central.buffer);
+    cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(28, nameBytes.length, true);
+    cv.setUint16(12, 0, true); cv.setUint16(14, (2026 - 1980) << 9 | 10 << 5 | 4, true);
+    central.set(nameBytes, 46);
+    const e = makeEntry({ name, nameBytes, flags: 0, method: 8, central });
+    e.setData(content);
+    return e;
+  });
+  return writeZip({ entries });
+}
+
+// Удобство: словарь имя → запись
+const byName = zip => Object.fromEntries(zip.entries.map(e => [e.name, e]));
+return { crc32, inflate, deflate, readZip, writeZip, buildZip, byName };
+})();
+const __ooxml = (() => {
+// Общее для docx и xlsx: разбор XML на куски без DOM, склейка текста абзаца из кусков,
+// поиск строк по склеенному тексту и замена с записью обратно в те же куски.
+// Нетронутые куски XML остаются байт в байт как в исходнике.
+
+// Токены: тег, текст, CDATA, прочее (объявление, комментарий). Значения атрибутов могут содержать >
+const TOK = /<!--[\s\S]*?-->|<!\[CDATA\[[\s\S]*?\]\]>|<\?[\s\S]*?\?>|<![^>]*>|<\/?[A-Za-z_][^>"']*(?:(?:"[^"]*"|'[^']*')[^>"']*)*>|[^<]+/g;
+function tokenize(s) {
+  const out = [];
+  for (const m of s.matchAll(TOK)) {
+    const raw = m[0];
+    if (raw[0] !== '<') out.push({ raw, kind: 'text' });
+    else if (raw.startsWith('<![CDATA[')) out.push({ raw, kind: 'cdata' });
+    else if (raw[1] === '!' || raw[1] === '?') out.push({ raw, kind: 'other' });
+    else {
+      const close = raw[1] === '/', name = raw.match(/^<\/?([^\s/>]+)/)[1];
+      out.push({ raw, kind: 'tag', name, close, self: !close && raw.endsWith('/>') });
+    }
+  }
+  if (out.reduce((a, t) => a + t.raw.length, 0) !== s.length) throw new Error('XML не разобран целиком');
+  return out;
+}
+const join = toks => toks.map(t => t.raw).join('');
+
+const ENT = { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'" };
+const decode = s => s.replace(/&(#x[0-9a-f]+|#\d+|lt|gt|amp|quot|apos);/gi, (m, e) =>
+  e[0] === '#' ? String.fromCodePoint(e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : +e.slice(1)) : ENT[e.toLowerCase()] ?? m);
+const encText = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const encAttr = s => encText(s).replace(/"/g, '&quot;');
+const tokVal = t => t.kind === 'cdata' ? t.raw.slice(9, -3) : decode(t.raw);
+
+function getAttr(raw, name) {
+  const m = raw.match(new RegExp(`\\s${name.replace(/[.:]/g, '\\$&')}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`));
+  return m ? decode(m[1] ?? m[2]) : null;
+}
+function setAttr(raw, name, value) {
+  const re = new RegExp(`(\\s${name.replace(/[.:]/g, '\\$&')}\\s*=\\s*)(?:"[^"]*"|'[^']*')`);
+  if (re.test(raw)) return raw.replace(re, (m, a) => `${a}"${encAttr(value)}"`);
+  return raw.replace(/\s*(\/?)>$/, (m, sl) => ` ${name}="${encAttr(value)}"${sl}>`);
+}
+// все атрибуты тега: [[имя, значение], ...]
+const attrs = raw => [...raw.matchAll(/\s([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)].map(m => [m[1], decode(m[2] ?? m[3])]);
+
+// Префикс пространства имён по корневому элементу: 'w:', '' или null, если не объявлено
+function prefixFor(toks, uris) {
+  const root = toks.find(t => t.kind === 'tag');
+  if (!root) return null;
+  for (const [k, v] of attrs(root.raw)) if (uris.includes(v)) { if (k === 'xmlns') return ''; if (k.startsWith('xmlns:')) return k.slice(6) + ':'; }
+  return null;
+}
+
+// Сравнение: неразрывные и узкие пробелы равны обычному, мягкий перенос не считается
+const normChar = c => c === ' ' || c === ' ' || c === ' ' ? ' ' : c;
+const norm = s => [...s].filter(c => c !== '­').map(normChar).join('');
+
+// Список замен: пары [строка, метка] или {from,to} или {value,tag}; длинные идут первыми
+function prepare(replacements) {
+  const list = replacements.map((r, i) => {
+    const [from, to] = Array.isArray(r) ? r : [r.from ?? r.value, r.to ?? r.tag];
+    return { i, from: String(from), to: String(to), n: norm(String(from)), count: 0 };
+  }).filter(x => x.n.length > 0);
+  return list.sort((a, b) => b.n.length - a.n.length || a.i - b.i);
+}
+
+// Склейка кусков в строку с картой: позиция в строке → [номер куска, смещение в куске]
+function build(segs) {
+  let s = ''; const map = [];
+  segs.forEach((g, k) => {
+    if (g.dead) return;
+    if (g.el) { if (g.ch) { s += g.ch; map.push([k, 0]); } return; }
+    for (let j = 0; j < g.val.length; j++) { const c = g.val[j]; if (c === '­') continue; s += normChar(c); map.push([k, j]); }
+  });
+  return { s, map };
+}
+const segText = segs => build(segs).s;
+
+// Вырезка куска [s0,o0]..[s1,o1) в склейке и вставка метки. Метка встаёт в первый текстовый кусок,
+// остальные куски пустеют, элементы (табуляция, перенос) внутри удаляются. false, если метку некуда поставить
+function splice(segs, s0, o0, s1, o1, to) {
+  let target = -1;
+  for (let k = s0; k <= s1; k++) if (!segs[k].el && !segs[k].dead) { target = k; break; }
+  if (target < 0) return false; // совпадение из одних табуляций и переносов
+  for (let k = s0; k <= s1; k++) {
+    const g = segs[k];
+    if (g.dead) continue;
+    if (g.el) { g.dead = true; continue; }
+    const pre = k === s0 ? g.val.slice(0, o0) : '', post = k === s1 ? g.val.slice(o1) : '';
+    g.val = pre + (k === target ? to : '') + post;
+  }
+  return true;
+}
+
+// Замена по кускам: каждое вхождение строки из списка. Возвращает число замен.
+function replaceSegs(segs, needles, onHit) {
+  let total = 0;
+  for (const nd of needles) {
+    const { s, map } = build(segs);
+    const occ = [];
+    for (let a = s.indexOf(nd.n); a >= 0; a = s.indexOf(nd.n, a + nd.n.length)) occ.push(a);
+    for (const a of occ.reverse()) {
+      const [s0, o0] = map[a], [s1, l1] = map[a + nd.n.length - 1];
+      if (!splice(segs, s0, o0, s1, segs[s1].el ? 1 : l1 + 1, nd.to)) continue;
+      nd.count++; total++; onHit?.(nd);
+    }
+  }
+  return total;
+}
+
+// Правки по месту: [{view, a, b, to}], a и b - позиции в склейке view (по умолчанию все куски).
+// Так меняется ровно то место, где маскировщик нашёл значение, даже если значение заходит в соседнюю ячейку.
+// Позиции считаются по кускам до правок, правки идут с конца, пересекающиеся пропускаются.
+function editSegs(segs, edits) {
+  const idx = new Map(segs.map((g, k) => [g, k])), maps = new Map(), list = [];
+  for (const ed of edits) {
+    const view = ed.view || segs;
+    if (!maps.has(view)) maps.set(view, build(view).map);
+    const map = maps.get(view);
+    if (!(ed.b > ed.a) || ed.a < 0 || ed.b > map.length) continue;
+    const [k0, o0] = map[ed.a], [k1, l1] = map[ed.b - 1];
+    list.push({ view, k0, o0, k1, o1: view[k1].el ? 1 : l1 + 1, p0: idx.get(view[k0]), p1: idx.get(view[k1]), to: ed.to });
+  }
+  list.sort((x, y) => y.p0 - x.p0 || y.o0 - x.o0);
+  let n = 0, lo = null;
+  for (const e of list) {
+    if (lo && (e.p1 > lo[0] || (e.p1 === lo[0] && e.o1 > lo[1]))) continue;
+    if (splice(e.view, e.k0, e.o0, e.k1, e.o1, e.to)) { n++; lo = [e.p0, e.o0]; }
+  }
+  return n;
+}
+
+// Замена в одной строке (атрибут, текст поля, ячейка без разметки)
+function replaceStr(str, needles, onHit) {
+  const segs = [{ val: str }];
+  const n = replaceSegs(segs, needles, onHit);
+  return { val: segs[0].val, n };
+}
+
+// Сбор абзацев. cfg: para (имена абзацев), text (текстовые элементы), del (удалённый текст),
+// els (элементы-символы внутри прогона: табуляция и т. п.), run, ins/delWrap (обёртки исправлений), fallback
+function collectParas(toks, cfg) {
+  const paras = [], stack = [];
+  let ins = 0, del = 0, fb = 0;
+  // глубина прогона считается внутри своего абзаца: у надписи внутри прогона свои w:tabs в свойствах
+  const run = () => stack.at(-1)?.run ?? 0;
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.kind !== 'tag') continue;
+    const n = t.name;
+    if (cfg.para.has(n)) {
+      if (t.self) continue;
+      if (!t.close) stack.push({ start: i, segs: [], fb: fb > 0, run: 0 });
+      else if (stack.length) paras.push(stack.pop());
+      continue;
+    }
+    if (t.self) {
+      if (cfg.els?.has(n) && run() > 0 && stack.length) stack.at(-1).segs.push({ el: true, ch: cfg.els.get(n), open: i, close: i, ins: ins > 0, del: del > 0 });
+      continue;
+    }
+    const d = t.close ? -1 : 1;
+    if (cfg.insWrap?.has(n)) { ins += d; continue; }
+    if (cfg.delWrap?.has(n)) { del += d; continue; }
+    if (cfg.fallback && n === cfg.fallback) { fb += d; continue; }
+    if (cfg.run && n === cfg.run) { if (stack.length) stack.at(-1).run += d; continue; }
+    if (t.close) continue;
+    const isText = cfg.text.has(n), isDel = cfg.del?.has(n), isEl = cfg.els?.has(n) && run() > 0;
+    if (!isText && !isDel && !isEl) continue;
+    let j = i + 1; const parts = [];
+    while (j < toks.length && !(toks[j].kind === 'tag' && toks[j].close && toks[j].name === n)) { if (toks[j].kind === 'text' || toks[j].kind === 'cdata') parts.push(j); j++; }
+    if (stack.length) {
+      if (isEl) stack.at(-1).segs.push({ el: true, ch: cfg.els.get(n), open: i, close: j, ins: ins > 0, del: del > 0 });
+      else if (parts.length) {
+        const val = parts.map(k => tokVal(toks[k])).join('');
+        stack.at(-1).segs.push({ open: i, tok: parts[0], extra: parts.slice(1), val, orig: val, ins: ins > 0, del: del > 0 || isDel, space: cfg.space });
+      }
+    }
+    i = j;
+  }
+  return paras.sort((a, b) => a.start - b.start);
+}
+
+// Запись изменённых кусков обратно в токены
+function writeSegs(toks, segs) {
+  for (const g of segs) {
+    if (g.el) { if (g.dead) for (let k = g.open; k <= g.close; k++) toks[k].raw = ''; continue; }
+    if (g.val === g.orig) continue;
+    toks[g.tok] = { raw: encText(g.val), kind: 'text' };
+    for (const k of g.extra) toks[k].raw = '';
+    if (g.space && /^\s|\s$|\s\s/.test(g.val) && getAttr(toks[g.open].raw, 'xml:space') !== 'preserve') toks[g.open].raw = setAttr(toks[g.open].raw, 'xml:space', 'preserve');
+  }
+}
+
+// Замена во всех текстовых узлах части без учёта абзацев (свойства, произвольный XML).
+// filter(tagName) решает, какие элементы трогать; edits: номер токена → правки по месту. Возвращает число замен
+function replaceAllText(toks, needles, filter = () => true, edits) {
+  let n = 0; const open = [];
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.kind === 'tag') { if (t.close) open.pop(); else if (!t.self) open.push(t.name); continue; }
+    if (t.kind !== 'text' && t.kind !== 'cdata') continue;
+    if (!filter(open.at(-1), open)) continue;
+    const val = tokVal(t), segs = [{ val }];
+    const k = (edits?.has(i) ? editSegs(segs, edits.get(i)) : 0) + replaceSegs(segs, needles);
+    if (k) { toks[i] = { raw: encText(segs[0].val), kind: 'text' }; n += k; }
+  }
+  return n;
+}
+// Текст токена так, как его видит склейка: для правок по месту
+const tokText = t => segText([{ val: tokVal(t) }]);
+
+// Замена в значениях атрибутов; pick(тег, имя атрибута) решает, какие трогать
+function replaceAttrs(toks, needles, pick) {
+  let n = 0;
+  for (const t of toks) {
+    if (t.kind !== 'tag' || t.close) continue;
+    for (const [k, v] of attrs(t.raw)) {
+      if (!pick(t, k)) continue;
+      const r = replaceStr(v, needles);
+      if (r.n) { t.raw = setAttr(t.raw, k, r.val); n += r.n; }
+    }
+  }
+  return n;
+}
+
+// Обезличивание авторов: одно имя везде получает один номер
+function authorMap() {
+  const m = new Map();
+  return v => { if (!v) return v; if (!m.has(v)) m.set(v, m.size + 1); return `Автор ${m.get(v)}`; };
+}
+
+// docProps: автор, последний редактор, организация, руководитель очищаются, в прочих полях замены по списку
+const CLEAR = new Set(['dc:creator', 'cp:lastModifiedBy', 'Company', 'Manager', 'HyperlinkBase']);
+function processProps(name, xml, needles, report, edits) {
+  const toks = tokenize(xml);
+  let n = 0;
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.kind !== 'tag' || t.close || t.self) continue;
+    const local = t.name;
+    if (CLEAR.has(local) && toks[i + 1]?.kind === 'text') { toks[i + 1] = { raw: '', kind: 'text' }; report.cleared.push(`${name}: ${local}`); }
+  }
+  n += replaceAllText(toks, needles, undefined, edits);
+  if (n) report.replaced[name] = (report.replaced[name] || 0) + n;
+  return join(toks);
+}
+
+// Текстовые свойства файла для чтения: название, тема, ключевые слова, описание, категория, свои свойства.
+// Автор, редактор, организация и руководитель при возврате очищаются, в текст их не берём
+const PROP_TEXT = /^(dc:title|dc:subject|cp:keywords|dc:description|cp:category|cp:contentStatus|vt:lpwstr|vt:lpstr|vt:bstr)$/;
+function propsText(xml) {
+  const toks = tokenize(xml), out = [], open = [];
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.kind === 'tag') { if (t.close) open.pop(); else if (!t.self) open.push(t.name); continue; }
+    if ((t.kind === 'text' || t.kind === 'cdata') && PROP_TEXT.test(open.at(-1) || '')) { const s = tokText(t); if (s.trim()) out.push({ i, text: s }); }
+  }
+  return out;
+}
+
+// Сборка текста для маскировщика с картой мест. Строка состоит из кусков: простой текст (заголовки, разделители)
+// или место {key, text} (абзац, ячейка, свойство). По ключу места замена найдёт его в файле.
+// Возврат каретки заменяем переводом строки той же длины: поле ввода в браузере всё равно его так заменит
+function textBuilder() {
+  const lines = [], units = []; let len = 0;
+  return {
+    line(...parts) {
+      let s = '';
+      for (const p of parts) {
+        if (p == null) continue;
+        if (typeof p === 'string') { s += p.replace(/\r/g, '\n'); continue; }
+        const t = p.text.replace(/\r/g, '\n');
+        units.push({ s: len + s.length, e: len + s.length + t.length, key: p.key, num: !!p.num });
+        s += t;
+      }
+      lines.push(s); len += s.length + 1;
+    },
+    get empty() { return lines.length === 0; },
+    done() { return { text: lines.join('\n'), units }; },
+  };
+}
+
+// Итоговый осмотр результата: остались ли строки из списка в каком-либо XML (текст и атрибуты).
+// Текст части склеивается без разделителей, поэтому возможны ложные срабатывания на стыке ячеек
+function scanLeft(name, xml, needles) {
+  const toks = tokenize(xml);
+  let text = '';
+  const vals = [];
+  for (const t of toks) {
+    if (t.kind === 'text' || t.kind === 'cdata') text += tokVal(t);
+    else if (t.kind === 'tag' && !t.close) for (const [k, v] of attrs(t.raw)) if (!k.startsWith('xmlns')) vals.push(v);
+  }
+  const hay = [norm(text), ...vals.map(norm)];
+  const out = [];
+  for (const nd of needles) {
+    let c = 0;
+    for (const h of hay) for (let a = h.indexOf(nd.n); a >= 0; a = h.indexOf(nd.n, a + 1)) c++;
+    if (c) out.push({ part: name, from: nd.from, count: c });
+  }
+  return out;
+}
+
+function newReport() {
+  return { total: 0, replaced: {}, byValue: [], notFound: [], cleared: [], authors: 0, converted: [], warnings: [], notHandled: [], leftovers: [], changedParts: [] };
+}
+function finishReport(report, needles) {
+  report.byValue = [...needles].sort((a, b) => a.i - b.i).map(x => ({ from: x.from, to: x.to, count: x.count }));
+  report.notFound = report.byValue.filter(x => x.count === 0).map(x => x.from);
+  report.total = Object.values(report.replaced).reduce((a, b) => a + b, 0);
+  return report;
+}
+const isXmlPart = name => /\.(xml|rels|vml)$/i.test(name);
+return { tokenize, join, decode, encText, encAttr, getAttr, setAttr, attrs, prefixFor, normChar, norm, prepare, segText, replaceSegs, editSegs, replaceStr, collectParas, writeSegs, replaceAllText, tokText, replaceAttrs, authorMap, processProps, propsText, textBuilder, scanLeft, newReport, finishReport, isXmlPart };
+})();
+const __xlsx_return = (() => {
+// Чтение и возврат xlsx. Формулы (f) не трогаются никогда, числа меняются только когда само число
+// надо спрятать: ячейка становится строкой inlineStr с меткой. Чтение и замена видят ячейку одинаково.
+const { readZip, writeZip, byName } = __zip;
+const { tokenize, join, prefixFor, prepare, collectParas, replaceSegs, editSegs, writeSegs, segText, replaceStr, replaceAllText, tokText, authorMap, processProps, propsText, scanLeft, newReport, finishReport, isXmlPart, getAttr, setAttr, decode, encText, attrs, textBuilder } = __ooxml;
+
+const SNS = ['http://schemas.openxmlformats.org/spreadsheetml/2006/main', 'http://purl.oclc.org/ooxml/spreadsheetml/main'];
+const ANS = ['http://schemas.openxmlformats.org/drawingml/2006/main', 'http://purl.oclc.org/ooxml/drawingml/main'];
+const HF = ['oddHeader', 'oddFooter', 'evenHeader', 'evenFooter', 'firstHeader', 'firstFooter'];
+
+// абзац в xlsx: строка si, строка ячейки is, текст примечания text; фонетика rPh отдельно
+const cfgS = p => ({ para: new Set([p + 'si', p + 'is', p + 'text', p + 'rPh']), text: new Set([p + 't']), space: true });
+const cfgD = p => ({ para: new Set([p + 'p']), text: new Set([p + 't']), els: new Map([[p + 'br', '\n'], [p + 'tab', '\t']]), space: false });
+const pfx = toks => prefixFor(toks, SNS) ?? '';
+const parasNamed = (toks, cfg, name) => collectParas(toks, cfg).filter(pa => toks[pa.start].name === name);
+
+// Связи части: [{id, type, path}], путь считается от папки части
+function resolve(dir, target) {
+  if (target.startsWith('/')) return target.slice(1);
+  const out = dir.split('/').filter(Boolean);
+  for (const s of target.split('/')) { if (s === '..') out.pop(); else if (s && s !== '.') out.push(s); }
+  return out.join('/');
+}
+async function relsOf(z, part) {
+  const dir = part.replace(/[^/]*$/, ''), r = z[`${dir}_rels/${part.slice(dir.length)}.rels`];
+  if (!r) return [];
+  return tokenize(await r.text()).filter(t => t.kind === 'tag' && !t.close && /Relationship$/.test(t.name)).map(t => {
+    const ext = getAttr(t.raw, 'TargetMode') === 'External', target = getAttr(t.raw, 'Target') || '';
+    return { id: getAttr(t.raw, 'Id'), type: (getAttr(t.raw, 'Type') || '').replace(/^.*\//, ''), path: ext ? null : resolve(dir, target) };
+  });
+}
+
+// Книга: листы в порядке workbook.xml, путь листа по связям, скрытые листы, система дат 1904
+async function bookOf(z) {
+  const path = 'xl/workbook.xml';
+  if (!z[path]) throw new Error('в архиве нет книги Excel (xl/workbook.xml)');
+  const rels = await relsOf(z, path), byId = Object.fromEntries(rels.map(r => [r.id, r]));
+  const sheets = []; let date1904 = false;
+  for (const t of tokenize(await z[path].text())) {
+    if (t.kind !== 'tag' || t.close) continue;
+    if (/(^|:)workbookPr$/.test(t.name)) date1904 = /^(1|true)$/.test(getAttr(t.raw, 'date1904') || '');
+    if (!/(^|:)sheet$/.test(t.name)) continue;
+    const id = attrs(t.raw).find(([k]) => /(^|:)id$/.test(k) && k !== 'sheetId')?.[1];
+    const r = byId[id];
+    if (!r?.path) continue;
+    sheets.push({ name: getAttr(t.raw, 'name') ?? '', state: getAttr(t.raw, 'state') || 'visible', path: r.path });
+  }
+  const styles = rels.find(r => r.type === 'styles')?.path || 'xl/styles.xml';
+  const shared = rels.find(r => r.type === 'sharedStrings')?.path || 'xl/sharedStrings.xml';
+  return { sheets, date1904, styles, shared };
+}
+
+// Стили: для каждого номера стиля ячейки (атрибут s) признак «показывать как дату»
+const BUILTIN_DATE = id => (id >= 14 && id <= 17) || id === 22 || (id >= 27 && id <= 36) || (id >= 50 && id <= 58);
+const isDateCode = code => /[dy]/i.test(code.replace(/"[^"]*"|\[[^\]]*\]|\\./g, ''));
+async function dateStyles(z, path) {
+  if (!z[path]) return [];
+  const custom = {}, xfs = []; let inXfs = false;
+  for (const t of tokenize(await z[path].text())) {
+    if (t.kind !== 'tag') continue;
+    const n = t.name.replace(/^[^:]*:/, '');
+    if (n === 'numFmt' && !t.close) custom[getAttr(t.raw, 'numFmtId')] = getAttr(t.raw, 'formatCode') || '';
+    else if (n === 'cellXfs') inXfs = !t.close && !t.self;
+    else if (n === 'xf' && inXfs && !t.close) {
+      const id = getAttr(t.raw, 'numFmtId') || '0';
+      xfs.push(id in custom ? isDateCode(custom[id]) : BUILTIN_DATE(+id));
+    }
+  }
+  return xfs;
+}
+
+// Дата из числа дней Excel: дд.мм.гггг. В системе 1900 есть несуществующее 29.02.1900 (день 60)
+function dateText(x, d1904 = false) {
+  if (!isFinite(x)) return null;
+  let days = Math.floor(x) + (d1904 ? 1462 : 0);
+  if (days < 1 || days > 2958465) return null;
+  if (days === 60 && !d1904) return '29.02.1900';
+  if (days < 60 && !d1904) days += 1;
+  const d = new Date(Date.UTC(1899, 11, 30) + days * 864e5);
+  const p2 = n => String(n).padStart(2, '0');
+  return `${p2(d.getUTCDate())}.${p2(d.getUTCMonth() + 1)}.${d.getUTCFullYear()}`;
+}
+
+// Число так, как его видит человек в Excel: 7779.0 → 7779, 9.841726358E9 → 9841726358, шум 0.30000000000000004 → 0.3.
+// Целое длиннее 15 цифр Excel хранит с потерей точности: approx
+const expand = s => {
+  const m = s.match(/^(-?)(\d)(?:\.(\d+))?e\+?(\d+)$/i);
+  if (!m) return s;
+  const dg = m[2] + (m[3] || ''), exp = +m[4];
+  return m[1] + (dg.length <= exp + 1 ? dg + '0'.repeat(exp + 1 - dg.length) : dg.slice(0, exp + 1) + '.' + dg.slice(exp + 1));
+};
+function numText(v) {
+  const s = v.trim();
+  if (!/^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(s)) return { text: v };
+  const neg = s[0] === '-' ? '-' : '';
+  if (/^[-+]?\d+$/.test(s)) { const d = s.replace(/^[-+]?0*(?=\d)/, ''); return { text: neg + d, approx: d.length > 15 }; }
+  if (/^[-+]?\d+\.0+$/.test(s)) { const d = s.replace(/^[-+]?0*(?=\d)/, '').replace(/\.0+$/, ''); return { text: neg + d, approx: d.length > 15 }; }
+  const x = Number(s);
+  if (!isFinite(x)) return { text: v };
+  if (Number.isInteger(x)) {
+    const plain = Math.abs(x) < 1e21 ? String(Math.abs(x)) : '';
+    if (plain && plain.length <= 15) return { text: neg + plain };
+    return { text: neg + expand(Math.abs(x).toPrecision(15)), approx: true };
+  }
+  const r = String(Number(x.toPrecision(15)));
+  return { text: /e/i.test(r) ? v : r };
+}
+
+const colIdx = ref => { const m = (ref || '').match(/^[A-Z]+/); return m ? [...m[0]].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0) - 1 : -1; };
+const colName = n => { let s = ''; for (n++; n > 0; n = Math.floor((n - 1) / 26)) s = String.fromCharCode(65 + (n - 1) % 26) + s; return s; };
+
+// Ячейки листа: [{ref, row, col, t, s, open, close, f, v, is}]. Ячейка без адреса r получает адрес по месту в строке
+function cellsOf(toks, p) {
+  const cells = []; let c = null, f = null, row = 0, col = 0;
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.kind !== 'tag') continue;
+    if (t.name === p + 'row' && !t.close) { row = +getAttr(t.raw, 'r') || row + 1; col = 0; continue; }
+    if (t.name === p + 'c') {
+      if (t.close) { if (c) { c.close = i; cells.push(c); } c = null; continue; }
+      let ref = getAttr(t.raw, 'r');
+      if (ref && /^[A-Z]+\d+$/.test(ref)) { col = colIdx(ref); row = +ref.replace(/^[A-Z]+/, ''); } else ref = colName(col) + row;
+      if (!t.self) c = { ref, row, col, t: getAttr(t.raw, 't'), s: +(getAttr(t.raw, 's') || 0), open: i };
+      col++;
+      continue;
+    }
+    if (!c) continue;
+    if (t.name === p + 'f') {
+      if (t.self) c.f = { open: i, close: i, text: '' };
+      else if (!t.close) f = { open: i, text: '' };
+      else if (f) { f.close = i; f.text = toks.slice(f.open + 1, i).map(x => decode(x.raw)).join(''); c.f = f; f = null; }
+    } else if (t.name === p + 'v' && !t.close && !t.self) {
+      let j = i + 1; while (!(toks[j].kind === 'tag' && toks[j].close)) j++;
+      c.v = { open: i, tok: j > i + 1 ? i + 1 : -1, close: j, text: toks.slice(i + 1, j).map(x => decode(x.raw)).join('') };
+    } else if (t.name === p + 'is' && !t.close && !t.self) c.is = i;
+  }
+  return cells;
+}
+
+// Что показать в тексте для ячейки. num: число или дата, замена в таком месте идёт по месту
+function cellText(c, ctx, inl) {
+  if (c.t === 's') return { text: c.v ? ctx.shared[+c.v.text] ?? '' : '' };
+  if (c.t === 'inlineStr') return { text: c.is != null ? inl?.get(c.is) ?? '' : '' };
+  if (!c.v) return { text: '' };
+  if (c.t === 'str' || c.t === 'e' || c.t === 'b') return { text: segText([{ val: c.v.text }]) };
+  if (c.t === 'd') {
+    const m = c.v.text.match(/^(\d{4})-(\d\d)-(\d\d)/);
+    return m ? { text: `${m[3]}.${m[2]}.${m[1]}`, num: true, date: true } : { text: c.v.text, num: true };
+  }
+  if (ctx.dates[c.s]) { const d = dateText(Number(c.v.text), ctx.d1904); if (d) return { text: d, num: true, date: true }; }
+  const r = numText(c.v.text);
+  return { text: r.text, num: true, approx: r.approx };
+}
+
+async function contextOf(z) {
+  const book = await bookOf(z);
+  let shared = [];
+  if (z[book.shared]) {
+    const toks = tokenize(await z[book.shared].text()), p = pfx(toks);
+    shared = parasNamed(toks, cfgS(p), p + 'si').map(pa => segText(pa.segs));
+  }
+  return { book, shared, dates: await dateStyles(z, book.styles), d1904: book.date1904 };
+}
+
+// Текст книги той же склейкой, что и замена. Листы построчно, ячейки через табуляцию, пустые строки пропускаются.
+// После листа его колонтитулы, примечания к ячейкам и надписи. progress(номер листа, всего, имя) зовётся перед каждым листом
+async function extractXlsxText(bytes, { progress } = {}) {
+  const zip = readZip(bytes), z = byName(zip);
+  const ctx = await contextOf(z);
+  const tb = textBuilder(), seen = new Set();
+  const info = { sheets: 0, hidden: [], rows: 0, formulas: 0, dates: 0, approx: [], comments: 0, shapes: 0 };
+  const sheets = ctx.book.sheets;
+  for (const [k, sh] of sheets.entries()) {
+    await progress?.(k, sheets.length, sh.name);
+    const e = z[sh.path];
+    if (!e) continue;
+    info.sheets++;
+    const mark = sh.state === 'veryHidden' ? ' (очень скрытый лист)' : sh.state === 'hidden' ? ' (скрытый лист)' : '';
+    if (mark) info.hidden.push({ name: sh.name, state: sh.state });
+    tb.line(`=== Лист «${sh.name}»${mark} ===`);
+    const toks = tokenize(await e.text()), p = pfx(toks);
+    const inl = new Map(parasNamed(toks, cfgS(p), p + 'is').map(pa => [pa.start, segText(pa.segs)]));
+    const rows = new Map();
+    for (const c of cellsOf(toks, p)) {
+      if (c.f) info.formulas++;
+      const v = cellText(c, ctx, inl);
+      if (v.approx) info.approx.push(`${sh.name}!${c.ref}`);
+      if (v.date) info.dates++;
+      if (v.text === '') continue;
+      if (!rows.has(c.row)) rows.set(c.row, []);
+      rows.get(c.row).push({ col: c.col, key: `${sh.path}!${c.ref}`, text: v.text, num: v.num });
+    }
+    for (const [, cells] of [...rows].sort((a, b) => a[0] - b[0])) {
+      cells.sort((a, b) => a.col - b.col);
+      const parts = []; let col = 0;
+      for (const c of cells) { parts.push('\t'.repeat(Math.max(0, c.col - col)), c); col = c.col; }
+      tb.line(...parts); info.rows++;
+    }
+    // колонтитулы листа
+    let inHf = 0, hfHead = false;
+    for (const [i, t] of toks.entries()) {
+      if (t.kind === 'tag' && HF.includes(t.name.slice(p.length))) { inHf += t.close ? -1 : t.self ? 0 : 1; continue; }
+      if (inHf && t.kind === 'text') {
+        if (!hfHead) { tb.line('--- колонтитулы листа ---'); hfHead = true; }
+        tb.line({ key: `${sh.path}@${i}`, text: tokText(t) });
+      }
+    }
+    // примечания к ячейкам и надписи этого листа, по связям листа
+    for (const r of await relsOf(z, sh.path)) {
+      if (!r.path || !z[r.path] || seen.has(r.path)) continue;
+      if (r.type === 'comments') { seen.add(r.path); info.comments += await commentLines(tb, z[r.path], r.path); }
+      if (r.type === 'drawing') { seen.add(r.path); info.shapes += await drawingLines(tb, z[r.path], r.path, '--- надписи на листе ---'); }
+    }
+  }
+  // примечания и рисунки без связи с листом
+  for (const e of zip.entries) {
+    if (seen.has(e.name)) continue;
+    if (/^xl\/comments\d*\.xml$/.test(e.name)) info.comments += await commentLines(tb, e, e.name, `=== Примечания (${e.name}) ===`);
+    else if (/^xl\/drawings\/drawing\d+\.xml$/.test(e.name)) info.shapes += await drawingLines(tb, e, e.name, `=== Надписи (${e.name}) ===`);
+  }
+  await propsLines(tb, z);
+  info.pivots = zip.entries.filter(e => /^xl\/pivotTables\/.*\.xml$/.test(e.name)).length;
+  info.embeddings = zip.entries.filter(e => /^xl\/embeddings\//.test(e.name)).length;
+  info.media = zip.entries.filter(e => /^xl\/media\//.test(e.name)).length;
+  return { ...tb.done(), info };
+}
+
+// Примечания: заголовок с адресом ячейки и текст примечания отдельным местом
+async function commentLines(tb, e, part, head) {
+  const toks = tokenize(await e.text()), p = pfx(toks);
+  let n = 0;
+  for (const pa of parasNamed(toks, cfgS(p), p + 'text')) {
+    let ref = '';
+    for (let i = pa.start; i >= 0; i--) if (toks[i].kind === 'tag' && !toks[i].close && toks[i].name === p + 'comment') { ref = getAttr(toks[i].raw, 'ref') || ''; break; }
+    if (head && !n) tb.line(head);
+    tb.line(`--- примечание к ${ref} ---`);
+    tb.line({ key: `${part}#${pa.start}`, text: segText(pa.segs) });
+    n++;
+  }
+  return n;
+}
+async function drawingLines(tb, e, part, head) {
+  const toks = tokenize(await e.text()), p = prefixFor(toks, ANS) ?? 'a:';
+  const paras = collectParas(toks, cfgD(p)).filter(pa => segText(pa.segs).trim());
+  if (paras.length) tb.line(head);
+  for (const pa of paras) tb.line({ key: `${part}#${pa.start}`, text: segText(pa.segs) });
+  return paras.length;
+}
+// Свойства файла: название, тема, ключевые слова и свои свойства
+async function propsLines(tb, z) {
+  let head = false;
+  for (const part of ['docProps/core.xml', 'docProps/custom.xml']) {
+    if (!z[part]) continue;
+    for (const { i, text } of propsText(await z[part].text())) {
+      if (!head) { tb.line('=== Свойства файла ==='); head = true; }
+      tb.line({ key: `${part}@${i}`, text });
+    }
+  }
+}
+
+// Правки по месту для одной части: ключ «часть@токен», «часть#абзац», «лист!A1»
+const editsFor = (edits, part, sep) => {
+  const m = new Map();
+  if (edits) for (const [k, v] of edits) if (k.startsWith(part + sep)) { const s = k.slice(part.length + 1); m.set(sep === '!' ? s : +s, v); }
+  return m;
+};
+
+// Число в ячейке совпадает со строкой из списка: тот же вид, что в тексте (дата, число без хвоста .0),
+// или строка из цифр с разделителями не короче 6 цифр (телефон, ИНН). Длинные числа сравниваются по 15 значащим цифрам
+function numMatch(disp, nd) {
+  if (nd.n === disp) return 1;
+  if (!/^-?\d+$/.test(disp) || !/^[\d\s()+\-.]+$/.test(nd.n)) return 0;
+  const dg = nd.n.replace(/\D/g, '');
+  if (dg.length < 6) return 0;
+  if (dg === disp.replace(/^-/, '')) return 1;
+  if (dg.length > 15 && Number(disp).toPrecision(15) === Number(dg).toPrecision(15)) return 2;
+  return 0;
+}
+
+// Excel не принимает кусок <r> с пустым <t> и предлагает восстановить файл. После замены такие куски убираем целиком
+// вместе с rPr; если пусты все куски строки, остаётся один <t/>. Трогаем только изменённые строки si, is, text
+const changed = pa => pa.segs.some(g => g.el ? g.dead : g.val !== g.orig);
+function dropEmptyRuns(toks, p, paras) {
+  for (const pa of paras) {
+    const name = toks[pa.start].name;
+    if (![p + 'si', p + 'is', p + 'text'].includes(name) || !changed(pa)) continue;
+    const runs = []; let cur = null, inT = false;
+    for (let i = pa.start + 1; i < toks.length; i++) {
+      const t = toks[i];
+      if (t.kind === 'tag' && t.close && t.name === name) break;
+      if (t.kind === 'tag' && t.name === p + 'r') {
+        if (t.self) runs.push({ open: i, close: i, text: '' });
+        else if (!t.close) cur = { open: i, text: '' };
+        else if (cur) { cur.close = i; runs.push(cur); cur = null; }
+        continue;
+      }
+      if (t.kind === 'tag' && t.name === p + 't' && !t.self) { inT = !t.close; continue; }
+      if (cur && inT && (t.kind === 'text' || t.kind === 'cdata')) cur.text += t.raw;
+    }
+    const empty = runs.filter(r => r.text === '');
+    if (!empty.length) continue;
+    const blank = r => { for (let k = r.open; k <= r.close; k++) toks[k].raw = ''; };
+    if (empty.length === runs.length) { runs.forEach(blank); toks[runs[0].open].raw = `<${p}t/>`; }
+    else empty.forEach(blank);
+  }
+}
+
+// Возврат. replacements: пары [строка, метка] и т. п. (см. prepare); edits: Map ключ места → [{a, b, to}], правки по месту
+// Ссылается ли хоть одна формула книги на ячейку, где число стало строкой.
+// Протянутая формула (shared) записана один раз, поэтому для неё совпадение по столбцу или строке.
+const colNum = s => [...s].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0);
+function markUsed(report) {
+  const fs = report.formulas || []; delete report.formulas;
+  if (!report.converted.length) return;
+  const REF = /(?:(?:'((?:[^']|'')+)'|([A-Za-zА-Яа-яЁё0-9_.]+))!)?\$?([A-Z]{1,3})\$?(\d+)(?::\$?([A-Z]{1,3})\$?(\d+))?|(?:(?:'((?:[^']|'')+)'|([A-Za-zА-Яа-яЁё0-9_.]+))!)?\$?([A-Z]{1,3}):\$?([A-Z]{1,3})(?![A-Za-z0-9(])/g;
+  const areas = [];
+  for (const f of fs) for (const m of f.text.replace(/"[^"]*"/g, '""').matchAll(REF)) {
+    if (m[3]) {
+      const c1 = colNum(m[3]), r1 = +m[4], c2 = m[5] ? colNum(m[5]) : c1, r2 = m[6] ? +m[6] : r1;
+      areas.push({ sheet: (m[1] || m[2] || f.sheet).replace(/''/g, "'"), c1: Math.min(c1, c2), c2: Math.max(c1, c2), r1: Math.min(r1, r2), r2: Math.max(r1, r2), wide: f.wide });
+    } else {
+      const c1 = colNum(m[9]), c2 = colNum(m[10]);
+      areas.push({ sheet: (m[7] || m[8] || f.sheet).replace(/''/g, "'"), c1: Math.min(c1, c2), c2: Math.max(c1, c2), r1: 1, r2: Infinity, wide: false });
+    }
+  }
+  for (const cv of report.converted) {
+    const i = cv.cell.lastIndexOf('!'), sh = cv.cell.slice(0, i), mm = /^([A-Z]+)(\d+)$/.exec(cv.cell.slice(i + 1));
+    if (!mm) continue;
+    const c = colNum(mm[1]), r = +mm[2];
+    cv.used = areas.some(a => a.sheet === sh && (a.wide ? (c >= a.c1 && c <= a.c2) || (r >= a.r1 && r <= a.r2) : c >= a.c1 && c <= a.c2 && r >= a.r1 && r <= a.r2));
+  }
+}
+
+async function replaceInXlsx(bytes, replacements, { edits } = {}) {
+  const zip = readZip(bytes), z = byName(zip);
+  const needles = prepare(replacements);
+  const report = newReport();
+  const author = authorMap();
+  const add = (part, n) => { if (n) report.replaced[part] = (report.replaced[part] || 0) + n; };
+  const ctx = await contextOf(z);
+  const sheetOf = Object.fromEntries(ctx.book.sheets.map(s => [s.path, s.name]));
+  report.hiddenSheets = ctx.book.sheets.filter(s => s.state !== 'visible').map(s => ({ name: s.name, state: s.state }));
+  let pivot = false, media = 0;
+
+  for (const e of zip.entries) {
+    const name = e.name;
+    if (/^xl\/pivot(Cache|Tables)\//.test(name)) pivot = true;
+    if (!isXmlPart(name)) {
+      if (/^xl\/embeddings\//.test(name)) report.notHandled.push({ kind: 'embedding', part: name, note: 'встроенный объект, внутрь не заглядываем' });
+      if (/^xl\/media\//.test(name)) media++;
+      continue;
+    }
+    const src = await e.text();
+    let out = src;
+    if (name === ctx.book.shared || /^xl\/comments\d*\.xml$/.test(name)) {
+      const toks = tokenize(src), p = pfx(toks);
+      const paras = collectParas(toks, cfgS(p)), ed = editsFor(edits, name, '#');
+      let n = 0;
+      for (const pa of paras) {
+        if (ed.has(pa.start)) n += editSegs(pa.segs, ed.get(pa.start));
+        n += replaceSegs(pa.segs, needles); writeSegs(toks, pa.segs);
+      }
+      if (name !== ctx.book.shared) {
+        // авторы примечаний; имя автора в начале текста примечания заменяем тем же номером
+        const names = [];
+        for (let i = 0; i < toks.length; i++) {
+          const t = toks[i];
+          if (t.kind === 'tag' && !t.close && !t.self && t.name === p + 'author' && toks[i + 1]?.kind === 'text') {
+            const a = decode(toks[i + 1].raw); names.push([a, author(a)]);
+            toks[i + 1] = { raw: encText(author(a)), kind: 'text' }; report.authors++;
+          }
+        }
+        const an = prepare(names);
+        if (an.length) for (const pa of paras) { replaceSegs(pa.segs, an); writeSegs(toks, pa.segs); }
+      }
+      dropEmptyRuns(toks, p, paras);
+      add(name, n);
+      out = join(toks);
+    } else if (sheetOf[name] != null) {
+      out = processSheet(name, sheetOf[name], src, needles, report, add, ctx, edits);
+    } else if (/^xl\/drawings\/drawing\d+\.xml$/.test(name) || /^xl\/charts\/chart\d+\.xml$/.test(name)) {
+      const toks = tokenize(src), p = prefixFor(toks, ANS) ?? 'a:', ed = editsFor(edits, name, '#');
+      let n = 0;
+      for (const pa of collectParas(toks, cfgD(p))) {
+        if (ed.has(pa.start)) n += editSegs(pa.segs, ed.get(pa.start));
+        n += replaceSegs(pa.segs, needles); writeSegs(toks, pa.segs);
+      }
+      n += replaceAllText(toks, needles, (tag, open) => tag === 'c:v' && open.includes('c:strCache'));
+      add(name, n);
+      out = join(toks);
+    } else if (/^xl\/threadedComments\/.*\.xml$/.test(name)) {
+      const toks = tokenize(src);
+      add(name, replaceAllText(toks, needles, tag => /(^|:)text$/.test(tag)));
+      out = join(toks);
+    } else if (/^xl\/persons\/.*\.xml$/.test(name)) {
+      const toks = tokenize(src);
+      for (const t of toks) if (t.kind === 'tag' && !t.close) for (const k of ['displayName', 'userId']) {
+        const a = getAttr(t.raw, k); if (a) { t.raw = setAttr(t.raw, k, author(a)); report.authors++; }
+      }
+      out = join(toks);
+    } else if (name === 'xl/workbook.xml') {
+      // имена листов и определённые имена не меняем: на них ссылаются формулы
+      const toks = tokenize(src);
+      for (const t of toks) if (t.kind === 'tag' && !t.close && /(^|:)sheet$/.test(t.name)) {
+        const r = replaceStr(getAttr(t.raw, 'name') || '', needles.map(x => ({ ...x, count: 0 })));
+        if (r.n) report.notHandled.push({ kind: 'sheetName', sheet: getAttr(t.raw, 'name'), note: 'имя листа содержит строку из списка: не переименовано, на имя ссылаются формулы' });
+      }
+      let dn = null;
+      for (const t of toks) {
+        if (t.kind === 'tag' && /(^|:)definedName$/.test(t.name)) { dn = t.close ? null : getAttr(t.raw, 'name'); continue; }
+        if (dn && t.kind === 'text') {
+          const r = replaceStr(decode(t.raw), needles.map(x => ({ ...x, count: 0 })));
+          if (r.n) report.warnings.push({ kind: 'definedName', name: dn, note: 'определённое имя содержит строку из списка, не изменено' });
+        }
+      }
+    } else if (/^docProps\/(core|app|custom)\.xml$/.test(name)) {
+      out = processProps(name, src, needles, report, editsFor(edits, name, '@'));
+    }
+    if (out !== src) { e.setData(out); report.changedParts.push(name); }
+  }
+
+  for (const e of zip.entries) if (isXmlPart(e.name)) report.leftovers.push(...scanLeft(e.name, await e.text(), needles));
+  // кэш сводных таблиц, заголовки умных таблиц, внешние ссылки не меняем: перечисляем, где осталось
+  for (const part of new Set(report.leftovers.map(l => l.part))) {
+    const m = part.match(/^xl\/(pivotCache|tables|externalLinks|queryTables|charts|drawings)\//);
+    if (m) report.notHandled.push({ kind: m[1], part, note: 'в части остались строки из списка, часть не обрабатывается' });
+  }
+  if (pivot) report.notHandled.push({ kind: 'pivot', note: 'в книге есть сводные таблицы, их копия данных не обрабатывается' });
+  if (media) report.notHandled.push({ kind: 'media', count: media, note: 'картинки не проверяются' });
+  markUsed(report);
+  finishReport(report, needles);
+  return { bytes: await writeZip(zip), report };
+}
+
+function processSheet(name, sheet, src, needles, report, add, ctx, edits) {
+  const toks = tokenize(src), p = pfx(toks);
+  const cells = cellsOf(toks, p), ed = editsFor(edits, name, '!');
+  let n = 0;
+  // строки внутри ячеек: сначала правки по месту, потом общий список
+  const isEd = new Map(cells.filter(c => c.is != null && ed.has(c.ref)).map(c => [c.is, ed.get(c.ref)]));
+  const isParas = collectParas(toks, { ...cfgS(p), para: new Set([p + 'is', p + 'rPh']) });
+  for (const pa of isParas) {
+    if (isEd.has(pa.start)) n += editSegs(pa.segs, isEd.get(pa.start));
+    n += replaceSegs(pa.segs, needles); writeSegs(toks, pa.segs);
+  }
+  // колонтитулы листа
+  n += replaceAllText(toks, needles, tag => !!tag && HF.includes(tag.slice(p.length)), editsFor(edits, name, '@'));
+  // ячейка получает свою строку вместо числа или общей строки, стиль остаётся
+  const toInline = (c, text) => {
+    toks[c.open].raw = setAttr(toks[c.open].raw, 't', 'inlineStr');
+    toks[c.v.open].raw = `<${p}is><${p}t${/^\s|\s$/.test(text) ? ' xml:space="preserve"' : ''}>${encText(text)}</${p}t></${p}is>`;
+    for (let k = c.v.open + 1; k <= c.v.close; k++) toks[k].raw = '';
+  };
+  for (const c of cells) {
+    const where = `${sheet}!${c.ref}`, ce = ed.get(c.ref);
+    if (c.f && c.f.text) (report.formulas ||= []).push({ sheet, text: c.f.text, wide: getAttr(toks[c.f.open].raw, 't') === 'shared' });
+    if (c.f) {
+      for (const nd of needles) if (c.f.text && replaceStr(c.f.text, [{ ...nd, count: 0 }]).n)
+        report.warnings.push({ kind: 'formula', cell: where, from: nd.from, note: 'строка из списка внутри формулы, формула не изменена' });
+    }
+    if (!c.v || c.v.tok < 0) continue;
+    if (c.t === 's') {
+      // значение заходит в соседнюю ячейку: правка только в этой ячейке, общая строка остаётся для остальных
+      if (!ce) continue;
+      const segs = [{ val: ctx.shared[+c.v.text] ?? '' }];
+      if (!editSegs(segs, ce)) continue;
+      replaceSegs(segs, needles);
+      toInline(c, segs[0].val); n++;
+      continue;
+    }
+    if (c.t === 'str' || c.t === 'e' || c.t === 'b') {
+      // кэш результата формулы: заменяем, иначе данные видны в файле
+      const segs = [{ val: c.v.text }];
+      const k = (ce ? editSegs(segs, ce) : 0) + replaceSegs(segs, needles);
+      if (k) { toks[c.v.tok] = { raw: encText(segs[0].val), kind: 'text' }; n += k; report.warnings.push({ kind: 'cached', cell: where, note: 'заменён кэш результата формулы; после пересчёта Excel вычислит значение заново' }); }
+      continue;
+    }
+    if (c.t && c.t !== 'n' && c.t !== 'd') continue;
+    const disp = cellText(c, ctx).text;
+    let to = null, approx = false;
+    if (ce) { const segs = [{ val: disp }]; if (editSegs(segs, ce)) { replaceSegs(segs, needles); to = segs[0].val; n++; } }
+    if (to == null) for (const nd of needles) {
+      const m = numMatch(disp, nd);
+      if (!m) continue;
+      nd.count++; n++; to = nd.to; approx = m === 2;
+      break;
+    }
+    if (to == null) continue;
+    if (c.f) {
+      // число из формулы: кэш становится строкой, формула остаётся
+      toks[c.open].raw = setAttr(toks[c.open].raw, 't', 'str');
+      toks[c.v.tok] = { raw: encText(to), kind: 'text' };
+      report.warnings.push({ kind: 'cached', cell: where, note: 'кэш формулы совпал с числом из списка: заменён строкой' });
+    } else {
+      toInline(c, to);
+      report.converted.push({ cell: where, to, approx });
+    }
+  }
+  dropEmptyRuns(toks, p, isParas);
+  add(name, n);
+  return join(toks);
+}
+return { dateText, numText, extractXlsxText, propsLines, editsFor, dropEmptyRuns, replaceInXlsx };
+})();
+const __docx_return = (() => {
+// Чтение и возврат docx. Вёрстка и стили не трогаются: меняется только текст внутри w:t,
+// пустые куски остаются пустыми w:t, свойства прогонов и абзацев не меняются.
+const { readZip, writeZip, byName } = __zip;
+const { tokenize, join, prefixFor, prepare, collectParas, replaceSegs, editSegs, writeSegs, segText, replaceStr, replaceAllText, replaceAttrs, authorMap, processProps, propsText, scanLeft, newReport, finishReport, isXmlPart, getAttr, setAttr, textBuilder } = __ooxml;
+
+const WNS = ['http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'http://purl.oclc.org/ooxml/wordprocessingml/main'];
+const ANS = ['http://schemas.openxmlformats.org/drawingml/2006/main', 'http://purl.oclc.org/ooxml/drawingml/main'];
+const td = new TextDecoder('utf-8', { ignoreBOM: true });
+
+// Части с текстом документа: основной, колонтитулы, сноски, примечания, автотекст
+const TEXT_PART = /^word\/(document\d*|header\d+|footer\d+|footnotes|endnotes|comments|glossary\/document)\.xml$/;
+// Рисунки SmartArt и диаграммы: текст в a:p/a:t
+const DML_PART = /^word\/(diagrams\/data\d+|diagrams\/drawing\d+|charts\/chart\d+)\.xml$/;
+const PART_NAME = n => n.replace(/^word\//, '').replace(/\.xml$/, '');
+
+function cfgW(p, ext = {}) {
+  return {
+    para: new Set([p + 'p']), text: new Set([p + 't', 'm:t']), del: new Set([p + 'delText']), run: p + 'r',
+    // табуляция и переносы входят в склейку как \t и \n, мягкий перенос как пустой символ
+    els: new Map([[p + 'tab', '\t'], [p + 'br', '\n'], [p + 'cr', '\n'], [p + 'noBreakHyphen', '-'], [p + 'softHyphen', '']]),
+    insWrap: new Set([p + 'ins', p + 'moveTo']), delWrap: new Set([p + 'del', p + 'moveFrom']),
+    fallback: 'mc:Fallback', space: true, ...ext,
+  };
+}
+const cfgA = p => ({ para: new Set([p + 'p']), text: new Set([p + 't']), els: new Map([[p + 'br', '\n'], [p + 'tab', '\t']]), run: null, fallback: 'mc:Fallback', space: false });
+
+// Два взгляда на абзац: текущий (без удалённого) и исходный (без вставленного)
+const viewNow = segs => segs.filter(g => !g.del);
+const viewOld = segs => segs.filter(g => !g.ins);
+
+function parasOf(name, toks) {
+  if (TEXT_PART.test(name)) { const p = prefixFor(toks, WNS); return p == null ? null : { paras: collectParas(toks, cfgW(p)), p }; }
+  if (DML_PART.test(name)) { const p = prefixFor(toks, ANS) ?? 'a:'; return { paras: collectParas(toks, { ...cfgA(p), fallback: null }), p, dml: true }; }
+  return null;
+}
+
+// Подписи частей в тексте
+function partTitle(name) {
+  const m = name.match(/^word\/(header|footer)(\d+)\.xml$/);
+  if (m) return `${m[1] === 'header' ? 'Верхний' : 'Нижний'} колонтитул ${m[2]}`;
+  return { 'word/footnotes.xml': 'Сноски', 'word/endnotes.xml': 'Концевые сноски', 'word/comments.xml': 'Примечания', 'word/glossary/document.xml': 'Автотекст' }[name]
+    || (/diagrams/.test(name) ? 'Схема SmartArt' : /charts/.test(name) ? 'Диаграмма' : name);
+}
+// Порядок: основной документ, колонтитулы, сноски, примечания, остальное
+const RANK = n => n === 'word/document.xml' ? 0 : /header/.test(n) ? 1 : /footer/.test(n) ? 2 : /footnotes/.test(n) ? 3 : /endnotes/.test(n) ? 4 : /comments/.test(n) ? 5 : 6;
+const order = es => [...es].sort((a, b) => RANK(a.name) - RANK(b.name) || a.name.localeCompare(b.name, 'en', { numeric: true }));
+
+// Текст документа той же склейкой, что и замена. Абзацы через \n, части с заголовками.
+// Удалённый в исправлениях текст отдельным блоком: абзацы в редакции до правки.
+// units: место каждого абзаца в тексте и его ключ для правок по месту
+async function extractDocxText(bytes) {
+  const zip = readZip(bytes), z = byName(zip);
+  const tb = textBuilder(), old = [];
+  const info = { parts: [], revisions: 0, comments: 0, notes: 0, textboxes: 0 };
+  for (const e of order(zip.entries)) {
+    if (!TEXT_PART.test(e.name) && !DML_PART.test(e.name)) continue;
+    const toks = tokenize(td.decode(await e.data()));
+    const r = parasOf(e.name, toks);
+    if (!r) continue;
+    const lines = [];
+    for (const pa of r.paras) {
+      if (pa.fb) continue; // запасная копия надписи в mc:Fallback повторяет основную
+      const now = segText(viewNow(pa.segs)), was = segText(viewOld(pa.segs));
+      lines.push({ key: `${e.name}#${pa.start}`, text: now });
+      if (was !== now) old.push({ key: `${e.name}#${pa.start}#old`, text: was });
+    }
+    if (e.name !== 'word/document.xml') {
+      // пустые колонтитулы и колонтитулы из одного номера страницы не показываем
+      const all = lines.map(l => l.text).join('\n').trim();
+      if (!all || (/header|footer/.test(e.name) && /^(стр\.?\s*)?\d*$/i.test(all))) continue;
+      tb.line(`=== ${partTitle(e.name)} ===`);
+      info.parts.push(partTitle(e.name));
+      if (/comments/.test(e.name)) info.comments += lines.filter(l => l.text.trim()).length;
+      if (/notes/.test(e.name)) info.notes += lines.filter(l => l.text.trim()).length;
+    } else info.textboxes = (toks.filter(t => t.kind === 'tag' && !t.close && /txbxContent$/.test(t.name)).length);
+    for (const l of lines) tb.line(l);
+  }
+  if (old.length) {
+    info.revisions = old.length;
+    tb.line('=== Исправления: удалённый текст, абзацы в редакции до правки ===');
+    for (const l of old) tb.line(l);
+  }
+  let head = false;
+  for (const part of ['docProps/core.xml', 'docProps/custom.xml']) {
+    if (!z[part]) continue;
+    for (const { i, text } of propsText(await z[part].text())) {
+      if (!head) { tb.line('=== Свойства файла ==='); head = true; }
+      tb.line({ key: `${part}@${i}`, text });
+    }
+  }
+  info.embeddings = zip.entries.filter(e => /^word\/embeddings\//.test(e.name)).length;
+  info.media = zip.entries.filter(e => /^word\/media\//.test(e.name)).length;
+  return { ...tb.done(), info };
+}
+
+// Правки по месту для части: номер токена начала абзаца → {now, old}
+function paraEdits(edits, part) {
+  const m = new Map();
+  if (edits) for (const [k, v] of edits) {
+    if (!k.startsWith(part + '#')) continue;
+    const [start, view] = k.slice(part.length + 1).split('#');
+    if (!m.has(+start)) m.set(+start, { now: [], old: [] });
+    m.get(+start)[view === 'old' ? 'old' : 'now'].push(...v);
+  }
+  return m;
+}
+const tokEdits = (edits, part) => {
+  const m = new Map();
+  if (edits) for (const [k, v] of edits) if (k.startsWith(part + '@')) m.set(+k.slice(part.length + 1), v);
+  return m;
+};
+
+// Возврат. replacements: пары [строка, метка] и т. п. (см. prepare); edits: Map ключ места → [{a, b, to}], правки по месту
+async function replaceInDocx(bytes, replacements, { edits } = {}) {
+  const zip = readZip(bytes);
+  const needles = prepare(replacements);
+  const report = newReport();
+  const author = authorMap();
+  const add = (part, n) => { if (n) report.replaced[part] = (report.replaced[part] || 0) + n; };
+  let media = 0;
+
+  for (const e of zip.entries) {
+    const name = e.name;
+    if (!isXmlPart(name)) {
+      if (/^word\/embeddings\//.test(name)) report.notHandled.push({ kind: 'embedding', part: name, note: 'встроенный объект, внутрь не заглядываем' });
+      if (/^word\/media\//.test(name)) media++;
+      continue;
+    }
+    const src = td.decode(await e.data());
+    let out = src;
+    if (TEXT_PART.test(name) || DML_PART.test(name)) {
+      const toks = tokenize(src);
+      const r = parasOf(name, toks);
+      if (!r) { report.notHandled.push({ kind: 'part', part: name, note: 'не найдено пространство имён WordprocessingML' }); continue; }
+      let n = 0;
+      // правки по месту: сначала по абзацам из текста, потом по их запасным копиям в mc:Fallback с тем же текстом
+      const pe = paraEdits(edits, name), byText = new Map();
+      for (const pa of r.paras) {
+        const ed = pe.get(pa.start);
+        if (ed && !pa.fb) byText.set(segText(viewNow(pa.segs)), ed);
+      }
+      for (const pa of r.paras) {
+        const ed = pa.fb ? byText.get(segText(viewNow(pa.segs))) : pe.get(pa.start);
+        if (ed) {
+          const now = viewNow(pa.segs), old = viewOld(pa.segs);
+          n += editSegs(pa.segs, [...ed.now.map(x => ({ ...x, view: now })), ...ed.old.map(x => ({ ...x, view: old }))]);
+        }
+        n += replaceSegs(viewNow(pa.segs), needles);
+        // удалённый текст тоже заменяем: он лежит в файле и виден в режиме исправлений
+        n += replaceSegs(viewOld(pa.segs), needles);
+        writeSegs(toks, pa.segs);
+      }
+      add(name, n);
+      if (!r.dml) {
+        const p = r.p;
+        // коды полей (HYPERLINK "mailto:...", MERGEFIELD) и простые поля
+        add(name + ' (поля)', replaceAllText(toks, needles, tag => tag === p + 'instrText' || tag === p + 'delInstrText'));
+        add(name + ' (поля)', replaceAttrs(toks, needles, (t, k) => k === p + 'instr'));
+        // авторы исправлений и примечаний
+        for (const t of toks) {
+          if (t.kind !== 'tag' || t.close) continue;
+          const a = getAttr(t.raw, p + 'author');
+          if (a) { t.raw = setAttr(t.raw, p + 'author', author(a)); report.authors++; }
+          const ini = getAttr(t.raw, p + 'initials');
+          if (ini) t.raw = setAttr(t.raw, p + 'initials', 'А');
+        }
+      } else {
+        // кэш строк диаграммы
+        add(name, replaceAllText(toks, needles, (tag, open) => tag === 'c:v' && open.includes('c:strCache')));
+      }
+      out = join(toks);
+    } else if (name === 'word/people.xml') {
+      const toks = tokenize(src);
+      for (const t of toks) {
+        if (t.kind !== 'tag' || t.close) continue;
+        for (const k of ['w15:author', 'w15:userId']) { const a = getAttr(t.raw, k); if (a) { t.raw = setAttr(t.raw, k, author(a)); report.authors++; } }
+      }
+      out = join(toks);
+    } else if (/^word\/_rels\/.*\.rels$/.test(name)) {
+      // адреса внешних ссылок: mailto, сайты с именами
+      const toks = tokenize(src);
+      add(name, replaceAttrs(toks, needles, (t, k) => k === 'Target' && getAttr(t.raw, 'TargetMode') === 'External'));
+      out = join(toks);
+    } else if (/^customXml\/item\d+\.xml$/.test(name)) {
+      // данные, привязанные к полям формы: Word при открытии может вернуть их в документ
+      const toks = tokenize(src);
+      add(name, replaceAllText(toks, needles));
+      out = join(toks);
+    } else if (/^docProps\/(core|app|custom)\.xml$/.test(name)) {
+      out = processProps(name, src, needles, report, tokEdits(edits, name));
+    }
+    if (out !== src) { e.setData(out); report.changedParts.push(name); }
+  }
+
+  // осмотр результата: что из списка осталось в XML
+  for (const e of zip.entries) if (isXmlPart(e.name)) report.leftovers.push(...scanLeft(e.name, td.decode(await e.data()), needles));
+  if (media) report.notHandled.push({ kind: 'media', count: media, note: 'картинки не проверяются' });
+  finishReport(report, needles);
+  return { bytes: await writeZip(zip), report };
+}
+return { extractDocxText, replaceInDocx };
+})();
+const __office = (() => {
+// Файл целиком для интерфейса Маски: чтение, план замены по находкам маскировщика, возврат в исходном формате,
+// проверка результата и предупреждения для человека. Без DOM: всё проверяется тестами на Node.
+const { extractDocxText, replaceInDocx } = __docx_return;
+const { extractXlsxText, replaceInXlsx } = __xlsx_return;
+
+const te = new TextEncoder();
+const extOf = name => (String(name).match(/\.([^.]+)$/)?.[1] || '').toLowerCase();
+const isOle = u8 => u8.length >= 4 && u8[0] === 0xD0 && u8[1] === 0xCF && u8[2] === 0x11 && u8[3] === 0xE0;
+const isZip = u8 => u8.length >= 4 && u8[0] === 0x50 && u8[1] === 0x4B;
+
+// Понятные сообщения вместо ошибок разбора
+const OLD_FORMAT = {
+  doc: 'Это файл старого формата Word (.doc). Откройте его в Word и сохраните как .docx: «Файл», «Сохранить как», тип «Документ Word». Потом загрузите новый файл.',
+  xls: 'Это файл старого формата Excel (.xls). Откройте его в Excel и сохраните как .xlsx: «Файл», «Сохранить как», тип «Книга Excel». Потом загрузите новый файл.',
+  ole: 'Файл сохранён в старом формате Word или Excel или защищён паролем. Откройте его в Word или Excel, снимите пароль и сохраните как .docx или .xlsx.',
+  zip: 'Файл повреждён или это не документ Word и не книга Excel. Откройте его в Word или Excel и сохраните заново как .docx или .xlsx.',
+};
+const TEXT_EXT = ['csv', 'md', 'txt'];
+// Суммы прячутся в текстах и остаются в таблицах (xlsx, csv), как в плане MVP: третий параметр mask(text, terms, {sums})
+const hideSums = name => !/\.(xlsx|csv)$/i.test(String(name));
+
+// Чтение файла: {kind, ext, text, units, info, note}. kind: docx, xlsx или text.
+// progress(номер листа, всего, имя листа) зовётся перед каждым листом книги
+async function readOffice(name, input, { progress } = {}) {
+  const bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
+  const ext = extOf(name);
+  if (ext === 'doc' || ext === 'xls') throw new Error(OLD_FORMAT[ext]);
+  if (ext === 'docx' || ext === 'xlsx') {
+    if (isOle(bytes)) throw new Error(OLD_FORMAT.ole);
+    if (!isZip(bytes)) throw new Error(OLD_FORMAT.zip);
+    let r;
+    try { r = ext === 'docx' ? await extractDocxText(bytes) : await extractXlsxText(bytes, { progress }); }
+    catch (e) { throw new Error(/zip|ZIP|CRC|архив/.test(e.message) ? OLD_FORMAT.zip + ' (' + e.message + ')' : e.message); }
+    return { kind: ext, ext, text: r.text, units: r.units, info: r.info, note: ext === 'docx' ? docxNote(r.info) : xlsxNote(r.info) };
+  }
+  if (isOle(bytes)) throw new Error(OLD_FORMAT.ole);
+  // текст: UTF-8, если не читается, то кодировка Windows (cp1251), как сохраняет Excel csv
+  let text, enc = 'utf-8';
+  try { text = new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+  catch { text = new TextDecoder('windows-1251').decode(bytes); enc = 'windows-1251'; }
+  const bom = text.charCodeAt(0) === 0xFEFF;
+  if (bom) text = text.slice(1);
+  const crlf = /\r\n/.test(text);
+  return { kind: 'text', ext, text: text.replace(/\r\n?/g, '\n'), units: [], info: { enc, bom, crlf },
+    note: `${ext || 'текст'}: как есть` + (enc !== 'utf-8' ? ', кодировка Windows-1251, результат сохранится в UTF-8' : '') };
+}
+
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return `${n} ${m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c}`; };
+function docxNote(i) {
+  const extra = [];
+  if (i.parts.length) extra.push('ещё: ' + i.parts.join(', ').toLowerCase());
+  if (i.revisions) extra.push(`исправления в ${plural(i.revisions, 'абзаце', 'абзацах', 'абзацах')}, удалённый текст в конце`);
+  return 'docx: текст, таблицы, надписи' + (extra.length ? '; ' + extra.join('; ') : '');
+}
+function xlsxNote(i) {
+  const extra = [];
+  if (i.hidden.length) extra.push(`скрытые листы: ${i.hidden.map(h => '«' + h.name + '»').join(', ')}`);
+  if (i.dates) extra.push(`даты показаны как дд.мм.гггг`);
+  if (i.comments) extra.push(`примечаний ${i.comments}`);
+  return `xlsx: листов ${i.sheets}, строк ${i.rows}, формул ${i.formulas}, в текст ушли значения` + (extra.length ? '; ' + extra.join('; ') : '');
+}
+
+// Места, которые задевает отрезок [s, e): места идут по возрастанию начала
+function unitsIn(units, s, e) {
+  let lo = 0, hi = units.length;
+  while (lo < hi) { const m = (lo + hi) >> 1; if (units[m].e <= s) lo = m + 1; else hi = m; }
+  const out = [];
+  for (let k = lo; k < units.length && units[k].s < e; k++) if (units[k].e > s) out.push(units[k]);
+  return out;
+}
+
+// Короткое значение (номер «12», «А-5», число меньше 6 цифр) как подстрока встречается в файле и там,
+// где маска его не находила: «12» сидит в «2012» и в «112 кв. м». Такое значение меняется только по месту находки
+const isShort = v => v.replace(/\s/g, '').length < 4 || (/^[\d\s.,\/№#()+-]+$/.test(v) && v.replace(/\D/g, '').length < 6);
+
+// План замены по находкам маскировщика (hits: {s, e, value, tag}) и сейфу (vault: {tag, value, forms}).
+// Находка внутри одного абзаца или ячейки идёт в общий список «значение → метка»: так оно заменится везде в файле.
+// Правки по месту получают находка, которая заходит в соседнюю ячейку или абзац, находка в ячейке с числом или датой
+// и короткое значение: метка в первом куске, остальные куски пустеют.
+// local: место → значение → сколько раз маска его там нашла, для проверки результата
+function planReplacements(read, hits, vault = []) {
+  const units = read.units || [], global = new Map(), edits = new Map(), split = new Set(), placed = new Set(), local = new Map();
+  const addEdit = (key, e) => { if (!edits.has(key)) edits.set(key, []); edits.get(key).push(e); };
+  const addGlobal = (v, tag) => { if (!global.has(v) && !isShort(v) && !/[\t\n]/.test(v)) global.set(v, tag); };
+  for (const h of hits) {
+    const over = unitsIn(units, h.s, h.e);
+    const one = over.length === 1 && over[0].s <= h.s && h.e <= over[0].e;
+    if (!over.length) { addGlobal(h.value, h.tag); continue; }
+    if (one && !over[0].num && !isShort(h.value)) { addGlobal(h.value, h.tag); continue; }
+    let first = true;
+    for (const u of over) {
+      const a = Math.max(h.s, u.s) - u.s, b = Math.min(h.e, u.e) - u.s;
+      if (b <= a || !read.text.slice(u.s + a, u.s + b).trim()) continue;
+      addEdit(u.key, { a, b, to: first ? h.tag : '' }); first = false;
+    }
+    placed.add(h.value);
+    if (!one) { split.add(h.value); continue; }
+    addGlobal(h.value, h.tag);
+    if (isShort(h.value)) {
+      const m = local.get(over[0].key) || new Map();
+      m.set(h.value, (m.get(h.value) || 0) + 1); local.set(over[0].key, m);
+    }
+  }
+  // формы из сейфа: то же значение в других местах файла
+  for (const v of vault) for (const f of v.forms ? [...v.forms] : [v.value]) if (f && !split.has(f)) addGlobal(f, v.tag);
+  return { replacements: [...global], edits, placed, split, local };
+}
+
+const count = (s, v) => { let n = 0; for (let a = s.indexOf(v); a >= 0; a = s.indexOf(v, a + v.length)) n++; return n; };
+const hideTags = (s, tags) => { for (const t of tags) s = s.split(t).join('\u0001'); return s; };
+
+// Что осталось в файле после замены. Значения из общего списка ищутся во всём тексте результата
+// (строки-заголовки листов не считаются: имена листов не меняются, об этом отдельное предупреждение).
+// Короткие значения проверяются по месту: в абзаце или ячейке их стало меньше ровно на число находок
+async function verifyReturn(kind, bytes, values, tags = [], { read, local } = {}) {
+  const r = kind === 'docx' ? await extractDocxText(bytes) : await extractXlsxText(bytes);
+  const body = hideTags(r.text.split('\n').filter(l => !l.startsWith('=== Лист «')).join('\n'), tags);
+  const left = [...new Set(values)].filter(v => v && !isShort(v) && body.includes(v));
+  if (local?.size) {
+    const before = new Map(read.units.map(u => [u.key, read.text.slice(u.s, u.e)]));
+    const after = new Map(r.units.map(u => [u.key, hideTags(r.text.slice(u.s, u.e), tags)]));
+    for (const [key, m] of local) for (const [v, n] of m)
+      if (count(after.get(key) ?? '', v) > count(before.get(key) ?? '', v) - n && !left.includes(v)) left.push(v);
+  }
+  return { left, text: r.text };
+}
+
+const MIME = { docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  csv: 'text/csv;charset=utf-8', md: 'text/markdown;charset=utf-8', txt: 'text/plain;charset=utf-8' };
+const outName = name => { const m = String(name).match(/^(.*?)(\.[^.]+)?$/); return `${m[1] || 'file'}-maska${m[2] || '.txt'}`; };
+
+// Файл в исходном формате. masked: текст с метками (для csv, md, txt), hits и vault из mask() того же текста
+async function buildReturn({ name, bytes, read, hits, vault, masked }) {
+  if (read.kind === 'text') {
+    let out = masked;
+    if (read.info.crlf) out = out.replace(/\n/g, '\r\n');
+    if (read.info.bom || read.ext === 'csv') out = '﻿' + out; // Excel открывает csv в UTF-8 только с BOM
+    return { bytes: te.encode(out), name: outName(name), type: MIME[read.ext] || MIME.txt, report: null, warnings: [] };
+  }
+  const src = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  const plan = planReplacements(read, hits, vault);
+  const { bytes: out, report } = await (read.kind === 'docx' ? replaceInDocx : replaceInXlsx)(src, plan.replacements, { edits: plan.edits });
+  const values = [...new Set([...hits.map(h => h.value), ...plan.replacements.map(r => r[0])])];
+  const check = await verifyReturn(read.kind, out, values, [...new Set(hits.map(h => h.tag))], { read, local: plan.local });
+  return { bytes: out, name: outName(name), type: MIME[read.kind], report, plan, left: check.left, warnings: returnWarnings(read, report, plan, check.left) };
+}
+
+const list = (a, n = 3) => a.slice(0, n).map(x => `«${x}»`).join(', ') + (a.length > n ? ` и ещё ${a.length - n}` : '');
+const cells = (a, n = 3) => a.slice(0, n).join(', ') + (a.length > n ? ` и ещё ${a.length - n}` : '');
+const PART_NAMES = [[/externalLink/, 'ссылки на другие книги'], [/pivotCache/, 'сводные таблицы'], [/tables\//, 'заголовки умных таблиц'],
+  [/styles/, 'названия стилей'], [/charts?\//, 'диаграммы'], [/drawings?\//, 'рисунки'], [/settings/, 'настройки документа'], [/customXml/, 'данные полей формы']];
+
+// Предупреждения перед скачиванием: короткие фразы для человека без технической подготовки
+function returnWarnings(read, report, plan, left = []) {
+  const w = [], info = read.info || {};
+  const nh = k => report.notHandled.filter(x => x.kind === k);
+  const sheetNames = nh('sheetName').map(x => x.sheet);
+  // значение, которое не нашлось при замене, но и в результате его нет (его съела более длинная замена), не считается
+  if (left.length) w.push(`После замены в файле остались найденные значения (${left.length}): ${list(left)}. Проверьте файл перед отправкой.`);
+  if (sheetNames.length) w.push(`В названиях листов остались данные: ${list(sheetNames)}. Маска листы не переименовывает, на них ссылаются формулы. Переименуйте листы в Excel.`);
+  const fx = [...new Set(report.warnings.filter(x => x.kind === 'formula').map(x => x.cell))];
+  if (fx.length) w.push(`В формулах записаны спрятанные данные (${fx.length}: ${cells(fx)}). Формулы Маска не меняет, после пересчёта Excel покажет эти данные снова. Замените такие формулы значениями.`);
+  const dn = [...new Set(report.warnings.filter(x => x.kind === 'definedName').map(x => x.name))];
+  if (dn.length) w.push(`В именах диапазонов остались данные (${dn.length}). Их видно в Excel на вкладке «Формулы», «Диспетчер имён».`);
+  if (nh('pivot').length) w.push('В книге есть сводные таблицы. Их копия данных внутри файла не обезличивается. Удалите сводные таблицы или сохраните их как значения.');
+  const emb = nh('embedding');
+  if (emb.length) w.push(`В файле есть вложенные объекты (${emb.length}): документ или таблица внутри файла. Маска их не открывает. Удалите их или проверьте отдельно.`);
+  const media = nh('media').reduce((a, x) => a + (x.count || 0), 0);
+  if (media) w.push(`В файле есть картинки (${media}). Текст на картинках и в их свойствах Маска не проверяет.`);
+  if (report.converted.length) {
+    const used = report.converted.filter(c => c.used), n = report.converted.length;
+    const head = `В ${plural(n, 'ячейке', 'ячейках', 'ячейках')} число заменено меткой (${cells(report.converted.map(c => c.cell))}).`;
+    w.push(used.length
+      ? `${head} На ${plural(used.length, 'такую ячейку', 'такие ячейки', 'таких ячеек')} ссылаются формулы (${cells(used.map(c => c.cell))}): там появится ошибка или значение не попадёт в расчёт. Проверьте итоги в файле.`
+      : `${head} Обычно это ИНН и номера счетов. Формулы на эти ячейки не ссылаются, расчёты не изменятся.`);
+  }
+  const hidden = report.hiddenSheets || info.hidden || [];
+  if (hidden.length) w.push(`Скрытые листы: ${list(hidden.map(h => h.name))}. Они обезличены, но в Excel их не видно, пока не показать скрытые листы.`);
+  if (info.approx?.length) w.push(`В ${plural(info.approx.length, 'ячейке', 'ячейках', 'ячейках')} длинное число, больше 15 цифр (${cells(info.approx)}). Excel хранит только первые 15 цифр, остальные потеряны ещё в исходном файле.`);
+  const parts = [...new Set(report.leftovers.map(l => l.part).filter(p => p !== 'xl/workbook.xml' && !/^xl\/worksheets\//.test(p) && !/^xl\/(pivotCache|pivotTables)\//.test(p)))];
+  if (parts.length) w.push(`Данные остались в служебных частях файла: ${[...new Set(parts.map(p => PART_NAMES.find(([re]) => re.test(p))?.[1] || 'служебные части'))].join(', ')}. На экране их не видно, но они есть внутри файла.`);
+  return w;
+}
+return { extOf, OLD_FORMAT, TEXT_EXT, hideSums, readOffice, isShort, planReplacements, verifyReturn, outName, buildReturn, returnWarnings };
+})();
+const { TAG_WORD, tagOf, TAG_ANY, parseTag, FORMAT, VERSION, safeNew, safeSerialize, safeFileName, safeParse, safeMerge, safeSetWords, safeSetSkip, safeKnownForms, safeSummary, safeDigest, safeRestore } = __safe;
+const { extOf, OLD_FORMAT, TEXT_EXT, hideSums, readOffice, isShort, planReplacements, verifyReturn, outName, buildReturn, returnWarnings } = __office;
+// ==== конец модулей из src/ ====
+// Сейф: curSafe текущий, baseSafe сейф до текущего документа. Живёт только в памяти страницы и в файле у человека,
+// в хранилища браузера не пишется. inFile: сейф открыт из файла или уже сохранён
+let curSafe=safeNew(),baseSafe=curSafe,savedDigest=safeDigest(curSafe),inFile=false,pending=null,demo=false; // demo: открыт сейф примера
+const dirty=()=>safeDigest(curSafe)!==savedDigest;
+const dateRu=d=>{const x=new Date(d);return isNaN(x)?'':x.toLocaleDateString('ru-RU')};
+function safeUI(){
+  const sm=safeSummary(curSafe),box=document.getElementById('s-safe'),info=document.getElementById('safeInfo'),name=curSafe.name?`«${esc(curSafe.name)}»`:'без названия';
+  if(!inFile&&!sm.records&&!sm.words){box.className='safe warn';
+    info.innerHTML='не загружен.<br>Сейф это файл на вашем компьютере. В нём Маска запоминает, какая метка заменила какую фирму или человека. По нему настоящие названия возвращаются в ответ из нейросети, а в следующих документах та же фирма получает ту же метку.<br>Если это первый документ клиента, открывать ничего не нужно. Обезличьте документ и в конце нажмите «Сохранить сейф».<br>Если документы этого клиента вы уже обезличивали, нажмите «Открыть сейф» и выберите сохранённый файл. Тогда метки совпадут с прежними.'}
+  else if(demo){box.className='safe';info.innerHTML=`сейф примера с вымышленными данными, сохранять его не нужно · записей ${sm.records}`}
+  else{box.className='safe'+(dirty()?' warn':'');
+    info.innerHTML=`${inFile?'':'новый, '}${name} · записей ${sm.records} · своих слов ${sm.words} · изменён ${dateRu(curSafe.changed)} · ${dirty()?'<b>не сохранён</b>':'сохранён'}`}
+  const nm=document.getElementById('safeName');if(nm!==document.activeElement)nm.value=curSafe.name||'';
+  const rm=document.getElementById('safeRemind');rm.hidden=!state||!dirty()||demo;
+  if(!rm.hidden)rm.innerHTML=`<b>Сохраните сейф</b>${state.added?`Новых записей в сейфе: ${state.added}. `:''}Без сохранённого сейфа следующий документ этого клиента получит другие метки, а ответ нейросети не вернуть.`+
+    (inFile?'':' Сейф не был открыт: метки не совпадут с документами, которые вы обезличивали раньше.');
+  if(sm.records)STEPS[3].disabled=false;
+}
+function safeMsg(text,warn){const m=document.getElementById('safeMsg');m.hidden=!text;m.className='check'+(warn?' warn':'');m.textContent=text||''}
+function saveSafe(){save(safeFileName(curSafe),safeSerialize(curSafe),'application/json');savedDigest=safeDigest(curSafe);inFile=true;safeMsg('');safeUI()}
+function applySafe(s,note,file){
+  curSafe=baseSafe=s;savedDigest=safeDigest(s);inFile=file;pending=null;document.getElementById('safeAsk').hidden=true;
+  document.getElementById('terms').value=s.words.join(', ');safeMsg(note,false);
+  if(state){render({scroll:false});prepareReturn()} // документ на экране перемаскируется с этим сейфом
+  safeUI();
+}
+// Другой сейф заменяет текущий только после подтверждения на странице: сейфы клиентов не смешиваются
+// then: что сделать после согласия вместо замены сейфа, так пример спрашивает разрешение занять место сейфа человека
+function askSafe(s,note,file,then){
+  leaveDemo(); // сейф примера убирается без вопроса, в нём только вымышленные данные
+  if(!curSafe.records.length&&!curSafe.words.length){applySafe(s,note,file);return}
+  pending={s,note,file,then};
+  document.getElementById('safeAskText').textContent=(then?'Пример откроется в отдельном сейфе, чтобы вымышленные данные не смешались с вашими. ':'')+
+    `Заменить сейф ${curSafe.name?'«'+curSafe.name+'»':'без названия'} (записей ${curSafe.records.length}) на ${then?'сейф примера':file?'«'+s.name+'»':'новый пустой'} (записей ${s.records.length})?`+
+    (dirty()?' Текущий сейф не сохранён, его новые записи пропадут. Если он ещё нужен, сначала сохраните его.':' Текущий сейф останется в своём файле.');
+  document.getElementById('safeAsk').hidden=false;
+}
+async function loadSafe(f){
+  let r;try{r=f.size>50e6?{error:'файл слишком большой для сейфа'}:safeParse(await f.text())}catch{r={error:'файл не удалось прочитать'}}
+  if(r.error){safeMsg(`Не удалось открыть сейф «${f.name}»: ${r.error}. Текущий сейф не изменился.`,true);return}
+  const s=r.safe;if(!s.name)s.name=f.name.replace(/(\.сейф)?\.json$/i,'');
+  askSafe(s,`Открыт сейф «${s.name}»: записей ${s.records.length}, своих слов ${s.words.length}.`+
+    (r.old?' Это сейф первой версии Маски: старые метки вида #ORG_1# останутся, новые записи получат метки вида [ОРГ_1].':''),true);
+}
+
+
+// Файл в исходном формате: последний загруженный файл и собранный по текущей маске результат
+let loaded=null,ready=null;
+const tick=()=>new Promise(r=>setTimeout(r));
+async function loadFile(f){
+  leaveDemo();
+  const info=document.getElementById('fileinfo');info.textContent='читаю…';loaded=null;
+  try{const bytes=new Uint8Array(await f.arrayBuffer());
+    const read=await readOffice(f.name,bytes,{progress:async(k,n,name)=>{info.textContent=`читаю лист ${k+1} из ${n}: ${name}`;await tick()}});
+    info.textContent='ищу данные…';await tick();
+    loaded={name:f.name,bytes,read};
+    const sums=document.getElementById('sums');if(sums)sums.checked=hideSums(f.name); // в таблицах суммы по умолчанию остаются
+    document.getElementById('src').value=read.text;info.textContent=`${f.name} · ${read.note}`;render();prepareReturn();
+  }catch(e){info.textContent='Не удалось прочитать: '+e.message;prepareReturn()}
+}
+// После каждой маски собираем файл заново: метки берутся из текущего сейфа
+async function prepareReturn(){
+  const btn=document.getElementById('dlFile'),warn=document.getElementById('retWarn'),note=document.getElementById('retInfo');
+  ready=null;btn.disabled=true;warn.hidden=true;note.textContent='';
+  btn.hidden=!loaded;if(!loaded||!state)return;
+  if(loaded.read.kind!=='text'&&document.getElementById('src').value!==loaded.read.text){btn.hidden=true;note.textContent='Текст изменён после загрузки файла, поэтому файл в исходном формате не собрать. Скачайте текст с метками или загрузите файл заново.';return}
+  note.textContent='готовлю файл…';await tick();const my=state;
+  try{const r=await buildReturn({name:loaded.name,bytes:loaded.bytes,read:loaded.read,hits:my.hits,vault:my.vault,masked:my.masked});
+    if(my!==state)return; // пока собирали, маску запустили заново
+    ready=r;gate();note.textContent=r.name+(r.report?` · замен в файле: ${r.report.total}`:'');
+    warn.hidden=!r.warnings.length;warn.innerHTML=`<b>Перед отправкой проверьте: ${r.warnings.length}</b><ul>${r.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`;
+  }catch(e){note.textContent='Не удалось собрать файл: '+e.message}
+}
+
+// Пример: договор и акт с одним поставщиком, все данные вымышлены (ИНН с верной контрольной суммой и кодом региона 00, которого нет).
+// Пример живёт в своём сейфе «Пример»: в сейф человека вымышленные данные не попадают, а его записи не попадают в пример.
+const SAMPLES=[`ДОГОВОР ПОСТАВКИ № 47/ЛГ-2026
+г. Камнегорск, 12 марта 2026 г.
+
+ООО «Ромашка», именуемое в дальнейшем «Поставщик», в лице директора Иванова Петра Сергеевича, действующего на основании Устава, и АО «Камнегорский завод», именуемое в дальнейшем «Покупатель», в лице генерального директора Соколовой Елены Викторовны, заключили настоящий договор.
+
+1. Поставщик передаёт Покупателю клей монтажный и краску фасадную, Покупатель принимает товар и оплачивает его.
+2. Цена договора 4 180 000 ₽, включая НДС.
+3. Срок поставки до 30 апреля 2026 г. Приёмка оформляется актом.
+4. Оплата в течение 10 рабочих дней после подписания акта.
+
+Реквизиты и подписи сторон
+Поставщик: ООО «Ромашка», ИНН 0047020267, КПП 004701001
+Директор ____________ / Иванов П.С. /
+Покупатель: АО «Камнегорский завод», ИНН 0047020316, КПП 004702001
+Генеральный директор ____________ / Соколова Е.В. /`,
+`АКТ ПРИЁМА-ПЕРЕДАЧИ ТОВАРА № 1
+к договору поставки № 47/ЛГ-2026 от 12 марта 2026 г.
+г. Камнегорск, 28 апреля 2026 г.
+
+Поставщик Ромашка ООО (ИНН 0047020267) передал, а покупатель АО «Камнегорский завод» (ИНН 0047020316) принял товар:
+Клей монтажный, 12 т
+Краска фасадная, 8 т
+Итого на сумму 4 180 000 руб., включая НДС.
+
+Товар принят без замечаний. Стороны претензий друг к другу не имеют.
+
+От поставщика: директор Иванов П.С.
+От покупателя: генеральный директор Соколова Е.В.`];
+const isSample=v=>SAMPLES.includes(v);
+// Выход из примера: сейф примера убирается, его текст и результат уходят с экрана
+function leaveDemo(){
+  if(!demo)return;demo=false;
+  curSafe=baseSafe=safeNew();savedDigest=safeDigest(curSafe);inFile=false;state=null;loaded=null;
+  const src=document.getElementById('src');if(isSample(src.value))src.value='';
+  document.getElementById('out').hidden=true;document.getElementById('s-sample').hidden=true;document.getElementById('fileinfo').textContent='';
+  safeMsg('Пример закрыт, его сейф убран. Для вашего документа начат новый пустой сейф.');safeUI();
+}
+// k: 0 договор, 1 акт. asked: человек уже согласился заменить свой сейф сейфом примера
+function showSample(k,asked){
+  if(!demo&&!asked&&(curSafe.records.length||curSafe.words.length)){askSafe(safeNew('Пример'),'',false,()=>showSample(k,true));return}
+  if(!demo){demo=true;curSafe=baseSafe=safeNew('Пример');savedDigest=safeDigest(curSafe);inFile=false;state=null;document.getElementById('terms').value='';safeMsg('')}
+  loaded=null;const sums=document.getElementById('sums');if(sums)sums.checked=true;
+  document.getElementById('src').value=SAMPLES[k];document.getElementById('fileinfo').textContent='пример, все данные вымышлены';
+  render({scroll:false});prepareReturn();
+  const tag=(state.hits.find(h=>h.t==='ORG'&&/Ромашка/.test(h.value))||{}).tag||tagOf('ORG',1);
+  document.getElementById('sampleTitle').textContent=k?'Пример, шаг 2 из 2. Акт к договору':'Пример, шаг 1 из 2. Договор поставки';
+  document.getElementById('sampleText').textContent=k
+    ?`В акте поставщик записан иначе, «Ромашка ООО», но метка у него та же, ${tag}. Сейф узнал его по договору. Прежние метки получили покупатель, ИНН, номер договора, сумма и подписанты. С вашими документами будет так же, если перед следующим файлом открыть сохранённый сейф.`
+    :`Все данные в примере вымышлены. Поставщик ООО «Ромашка» получил метку ${tag}, она записана в сейф примера. Теперь нажмите «2. Акт к нему» и найдите поставщика в акте.`;
+  const box=document.getElementById('s-sample');box.hidden=false;setStep(1);lock=Date.now()+900;box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('sample').onclick=document.getElementById('sampleDoc').onclick=()=>showSample(0);
+document.getElementById('sampleAkt').onclick=()=>showSample(1);
+// свой текст в поле документа закрывает пример: чужие данные в сейф примера не пишутся
+// правка текста: маска устарела, окно проверки закрывает сохранение; свой текст закрывает пример
+document.getElementById('src').oninput=()=>{const v=document.getElementById('src').value;if(state&&!stale&&v!==state.text){stale=true;gate()}if(!isSample(v))leaveDemo()};
+
+// Просьба для нейросети: что значат метки и как с ними обращаться. tags: метки текущего документа или сейфа, без них общий перечень
+const PROMPT_WHAT={ORG:'организация',PERSON:'человек',ID:'номер договора или другого документа',AMOUNT:'сумма денег',INN:'ИНН',KPP:'КПП',OGRN:'ОГРН',BIK:'БИК банка',
+  ACCOUNT:'банковский счёт',CARD:'номер банковской карты',PHONE:'телефон',EMAIL:'адрес электронной почты',ADDRESS:'почтовый адрес',SNILS:'СНИЛС',PASSPORT:'паспортные данные',
+  DOB:'дата рождения',DATE:'дата',NICK:'имя в мессенджере',TERM:'название или слово, которое скрыл автор документа'};
+const PROMPT_COMMON=['ORG','PERSON','ID','AMOUNT','INN','PHONE','EMAIL','ADDRESS'];
+function promptText(tags=[]){
+  const first=new Map();
+  for(const tag of tags){const p=parseTag(tag);if(p&&!p.old&&!first.has(p.type))first.set(p.type,tag)}
+  const rows=first.size?Object.keys(PROMPT_WHAT).filter(t=>first.has(t)).map(t=>`${first.get(t)} ${PROMPT_WHAT[t]}`):PROMPT_COMMON.map(t=>`${tagOf(t,1)} ${PROMPT_WHAT[t]}`);
+  return `К этому сообщению приложен документ, из которого убраны настоящие данные. Вместо названий, имён, номеров и сумм в нём стоят метки в квадратных скобках, например [ОРГ_1].
+
+Слово в метке говорит, что скрыто. Номер отличает одну организацию или одного человека от другого. ${first.size?'В этом документе встречаются такие метки:':'Чаще всего встречаются такие метки:'}
+${rows.join('\n')}
+Метки с другими словами устроены так же.
+
+Как работать с метками:
+1. Пиши метки в ответе в точности как в документе: те же буквы, тот же номер, квадратные скобки.
+2. Не склоняй и не переводи метки. Слова вокруг менять можно, например «договор с [ОРГ_1]» или «подпись [ФИО_1]».
+3. Не раскрывай метки и не придумывай за них настоящие названия, имена, номера и суммы.
+4. Одинаковая метка означает одно и то же во всех документах этого разговора. Разные метки означают разное: [ОРГ_1] и [ОРГ_2] это две разные организации.
+5. Если для ответа нужны данные, скрытые за меткой, скажи об этом прямо.
+
+Моя задача: `;
+}
+// Буфер обмена: сначала navigator.clipboard, при открытии с диска его может не быть, тогда старый способ через выделение
+async function copyText(t){
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);return true}}catch{}
+  try{const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return !!ok}catch{return false}
+}
+document.getElementById('copyPrompt').onclick=async e=>{
+  const b=e.target,box=document.getElementById('promptBox'),info=document.getElementById('promptInfo');
+  const t=promptText(state?state.vault.map(v=>v.tag):curSafe.records.map(r=>r.tag));
+  if(await copyText(t)){box.hidden=true;info.textContent='Просьба скопирована. Вставьте её в чат с нейросетью, приложите обезличенный файл и допишите свою задачу после слов «Моя задача».';
+    const o='Скопировать просьбу для нейросети';b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1200)}
+  else{box.value=t;box.hidden=false;box.select();info.textContent='Скопировать не получилось. Выделите текст просьбы ниже, скопируйте его и вставьте в чат с нейросетью.'}
+};
+document.getElementById('run').onclick=()=>{render();prepareReturn()};
+// файл .json это сейф, остальное документ
+const openAny=f=>f&&(/\.json$/i.test(f.name)?loadSafe(f):loadFile(f));
+document.getElementById('file').onchange=e=>openAny(e.target.files[0]);
+document.getElementById('safeFile').onchange=e=>{const f=e.target.files[0];e.target.value='';f&&loadSafe(f)};
+document.getElementById('safeSave').onclick=saveSafe;
+document.getElementById('safeNew').onclick=()=>askSafe(safeNew(),'Начат новый сейф. Впишите название клиента или дела.',false);
+document.getElementById('safeYes').onclick=()=>{const p=pending;if(!p)return;
+  if(p.then){pending=null;document.getElementById('safeAsk').hidden=true;p.then()}else applySafe(p.s,p.note,p.file)};
+document.getElementById('safeNo').onclick=()=>{pending=null;document.getElementById('safeAsk').hidden=true};
+document.getElementById('safeName').oninput=e=>{const n=e.target.value.trim(),d=new Date().toISOString();curSafe={...curSafe,name:n,changed:d};baseSafe={...baseSafe,name:n};safeUI()};
+addEventListener('beforeunload',e=>{if(dirty()&&curSafe.records.length&&!demo){e.preventDefault();e.returnValue=''}});
+const drop=document.getElementById('drop');
+['dragover','dragenter'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+document.addEventListener('drop',e=>openAny(e.dataTransfer.files[0]));
+const copy=(t,b)=>navigator.clipboard.writeText(t).then(()=>{const o=b.textContent;b.textContent='Скопировано';setTimeout(()=>b.textContent=o,1200)});
+document.getElementById('copy').onclick=e=>{if(!state||!reviewed||stale)return;copy(state.masked,e.target);STEPS[2].classList.add('done')};
+document.getElementById('copyRestored').onclick=e=>copy(e.target.dataset.t,e.target);
+document.getElementById('restore').onclick=restore;
+const save=(name,data,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+document.getElementById('dlFile').onclick=()=>ready&&reviewed&&!stale&&save(ready.name,ready.bytes,ready.type);
+document.getElementById('dlMasked').onclick=()=>state&&reviewed&&!stale&&save('s-metkami.txt',state.masked,'text/plain;charset=utf-8');
+document.getElementById('dlVault').onclick=saveSafe;
+safeUI();
+</script>
+</body>
+</html>
